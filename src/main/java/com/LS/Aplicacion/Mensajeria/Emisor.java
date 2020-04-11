@@ -12,6 +12,8 @@ public class Emisor {
     private final static String COLA_SALIDA = "salida";
     private Channel canal;
 
+
+
     public Emisor() throws Exception {
         ConnectionFactory factoria = new ConnectionFactory();
         factoria.setHost("localhost");
@@ -21,8 +23,7 @@ public class Emisor {
         canal.queueDeclare(COLA_SALIDA, false, false, false, null);
     }
 
-    public void enviarMensaje() throws Exception {
-        String mensaje = "Hola mundo!";
+    public void enviarMensaje(String mensaje) throws Exception {
         canal.basicPublish("", COLA_ENTRADA, null, mensaje.getBytes());
         log.info(" [x] Enviado '" + mensaje + "'");
     }
@@ -33,6 +34,5 @@ public class Emisor {
         };
         canal.basicConsume(COLA_SALIDA, true, deliverCallback, consumerTag -> {});
         log.info("Esperando mensajes...");
-
     }
 }

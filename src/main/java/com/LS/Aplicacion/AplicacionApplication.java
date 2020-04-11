@@ -10,7 +10,7 @@ public class AplicacionApplication {
 
 	@Bean
 	public void conexionBroker() throws Exception {
-		new Emisor().enviarMensaje();
+		new Emisor().enviarMensaje("startConection");
 	}
 
 	public static void main(String[] args) {
