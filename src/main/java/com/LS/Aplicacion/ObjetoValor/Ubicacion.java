@@ -11,9 +11,6 @@
 
 package com.LS.Aplicacion.ObjetoValor;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class Ubicacion {
 
     private String edificio;

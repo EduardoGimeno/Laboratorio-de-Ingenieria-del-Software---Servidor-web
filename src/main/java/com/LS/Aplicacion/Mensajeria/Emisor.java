@@ -3,7 +3,11 @@ package com.LS.Aplicacion.Mensajeria;
 import com.rabbitmq.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+
+@Service
 public class Emisor {
 
     private Logger log = LoggerFactory.getLogger(Emisor.class);
@@ -26,13 +30,16 @@ public class Emisor {
     public void enviarMensaje(String mensaje) throws Exception {
         canal.basicPublish("", COLA_ENTRADA, null, mensaje.getBytes());
         log.info(" [x] Enviado '" + mensaje + "'");
+        log.info(recibirMensaje());
     }
-    public void recibirMensaje() throws Exception {
-        DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String mensaje = new String(delivery.getBody(), "UTF-8");
-            log.info(" [x] Recibido: '"+ mensaje + "'");
-        };
-        canal.basicConsume(COLA_SALIDA, true, deliverCallback, consumerTag -> {});
-        log.info("Esperando mensajes...");
+    public String recibirMensaje() throws Exception {
+        boolean autoAck = false;
+        GetResponse response = canal.basicGet(COLA_SALIDA, autoAck);
+        while (response == null) {
+            response = canal.basicGet(COLA_SALIDA, autoAck);
+        }
+        String mensaje = new String(response.getBody(), StandardCharsets.UTF_8);
+        canal.basicAck(response.getEnvelope().getDeliveryTag(), false);
+        return mensaje;
     }
 }
