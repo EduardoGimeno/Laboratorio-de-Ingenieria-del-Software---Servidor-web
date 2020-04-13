@@ -13,8 +13,8 @@ public class GerenteController {
     @Autowired
     Emisor emisor;
 
-    @PatchMapping(path = "/logIn")
-    public ResponseEntity cambiarEstado(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
+    @PatchMapping(path = "/signIn")
+    public ResponseEntity signIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
         String dto = "{\"nomUsuario\":" + nomUsuario + ",\"password\":" + password + "}";
         String json = "nombrefuncion," + dto;
         emisor.enviarMensaje(json);

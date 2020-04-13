@@ -1,28 +1,21 @@
 package com.LS.Aplicacion.DTO;
 
-import java.io.Serializable;
+import java.util.UUID;
 
-public class BusquedaDTO implements Serializable {
-    private String edificio;
-    private String tipoEspacio;
+public class DatosDTO {
+
+    private UUID id;
     private boolean pizarra;
     private boolean proyector;
     private int capacidad;
+    private String notas;
 
-    public String getEdificio() {
-        return edificio;
+    public UUID getId() {
+        return id;
     }
 
-    public void setEdificio(String edificio) {
-        this.edificio = edificio;
-    }
-
-    public String getTipoEspacio() {
-        return tipoEspacio;
-    }
-
-    public void setTipoEspacio(String tipoEspacio) {
-        this.tipoEspacio = tipoEspacio;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public boolean isPizarra() {
@@ -49,4 +42,11 @@ public class BusquedaDTO implements Serializable {
         this.capacidad = capacidad;
     }
 
+    public String getNotas() {
+        return notas;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
 }
