@@ -1,6 +1,6 @@
 package com.LS.Aplicacion.Controlador;
 
-import com.LS.Aplicacion.DTO.ReservaDTO;
+import DTO.ReservaDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.LS.Aplicacion.Controlador;
 
-import com.LS.Aplicacion.DTO.BusquedaDTO;
-import com.LS.Aplicacion.DTO.ReservaDTO;
+import DTO.BusquedaDTO;
+import DTO.ReservaDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
