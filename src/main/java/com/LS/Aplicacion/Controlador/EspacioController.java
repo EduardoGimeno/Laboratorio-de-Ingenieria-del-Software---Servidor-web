@@ -1,9 +1,9 @@
 package com.LS.Aplicacion.Controlador;
 
 import DTO.BusquedaDTO;
-import DTO.EspacioDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,21 +11,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.UUID;
-
 public class EspacioController {
 
     @Autowired
     Emisor emisor;
 
     @GetMapping(path = "/getInfo")
-    public ResponseEntity obtenerInformacion (@RequestBody UUID id) throws Exception {
-        String dto = "{\"id\":" + id.toString() + "}";
-        String json = "nombrefuncion," + dto;
+    public ResponseEntity obtenerInformacion (@RequestBody String id) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("id", id);
+        String json = "nombrefuncion," + jsonObject.toString();
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(EspacioDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+        }
     }
 
     @GetMapping(path = "/search")
@@ -34,28 +39,49 @@ public class EspacioController {
         String dto = mapper.writeValueAsString(busqueda);
         String json = "nombrefuncion," + dto;
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(EspacioDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+        }
     }
 
     @GetMapping(path = "/getInfoFiltered")
     public ResponseEntity obtenerPorEdificioYTipo (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
-        String dto = "{\"id\":" + edificio + ",\"tipo\":" + tipo + "}";
-        String json = "nombrefuncion," + dto;
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("edificio", edificio);
+        jsonObject.append("tipo", tipo);
+        String json = "nombrefuncion," + jsonObject.toString();
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(EspacioDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+        }
     }
 
-    @PatchMapping(path = "/getInfoFiltered")
+    @PatchMapping(path = "/modifySpace")
     public ResponseEntity modificarDatos (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
-        String dto = "{\"id\":" + edificio + ",\"tipo\":" + tipo + "}";
-        String json = "nombrefuncion," + dto;
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("edificio", edificio);
+        jsonObject.append("tipo", tipo);
+        String json = "nombrefuncion," + jsonObject.toString();
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(EspacioDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+        }
     }
 }

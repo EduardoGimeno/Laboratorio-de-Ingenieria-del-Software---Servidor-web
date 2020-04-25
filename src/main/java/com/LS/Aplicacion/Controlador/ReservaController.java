@@ -4,13 +4,12 @@ import DTO.BusquedaDTO;
 import DTO.ReservaDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @Controller
 public class ReservaController {
@@ -24,29 +23,50 @@ public class ReservaController {
         String dto = mapper.writeValueAsString(reserva);
         String json = "nombrefuncion," + dto;
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ReservaDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
+        }
     }
 
     @PatchMapping(path = "/changeState/{id}")
-    public ResponseEntity cambiarEstado(@PathVariable UUID id, @RequestBody String estado, @RequestBody String motivo) throws Exception {
-        String dto = "{\"id\":" + id.toString() + ",\"estado\":" + estado + ",\"motivo\":" + motivo + "}";
-        String json = "nombrefuncion," + dto;
+    public ResponseEntity cambiarEstado(@PathVariable String id, @RequestBody String estado, @RequestBody String motivo) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("id", id);
+        jsonObject.append("estado", estado);
+        jsonObject.append("motivo", motivo);
+        String json = "nombrefuncion," + jsonObject.toString();
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ReservaDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
+        }
     }
 
     @GetMapping(path = "/getReservasByEspacio")
-    public ResponseEntity getReservasByEspacio(UUID idEspacio) throws Exception {
-        String dto = "{\"id\":" + idEspacio + "}";
-        String json = "nombrefuncion," + dto;
+    public ResponseEntity getReservasByEspacio(String idEspacio) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("id", idEspacio);
+        String json = "nombrefuncion," + jsonObject.toString();
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ReservaDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
+        }
     }
 
     @GetMapping(path = "/getReservasFiltradas")
@@ -55,9 +75,14 @@ public class ReservaController {
         String dto = mapper.writeValueAsString(busqueda);
         String json = "nombrefuncion," + dto;
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ReservaDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
+        }
     }
 
 

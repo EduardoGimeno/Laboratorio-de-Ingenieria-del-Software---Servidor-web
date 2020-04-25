@@ -1,7 +1,8 @@
 package com.LS.Aplicacion.Controlador;
 
-import DTO.ReservaDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,19 @@ public class GerenteController {
 
     @PatchMapping(path = "/signIn")
     public ResponseEntity signIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
-        String dto = "{\"nomUsuario\":" + nomUsuario + ",\"password\":" + password + "}";
-        String json = "nombrefuncion," + dto;
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("nomUsuario", nomUsuario);
+        jsonObject.append("password", password);
+        String json = "nombrefuncion," + jsonObject.toString();
         emisor.enviarMensaje(json);
-        emisor.recibirMensaje();
-        // Hay que cambiar esta intruccion para que devuelva el DTO
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(ReservaDTO.class);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, GerenteDTO.class));
+        }
     }
 }
