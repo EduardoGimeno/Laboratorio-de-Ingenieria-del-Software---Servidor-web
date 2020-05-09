@@ -21,7 +21,7 @@ public class EspacioController {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("id", id);
-        String json = "nombrefuncion," + jsonObject.toString();
+        String json = "obtenerEspacioPorId," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
@@ -55,7 +55,7 @@ public class EspacioController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("edificio", edificio);
         jsonObject.append("tipo", tipo);
-        String json = "nombrefuncion," + jsonObject.toString();
+        String json = "obtenerEspacioPorEdificioYTipo," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
@@ -73,7 +73,7 @@ public class EspacioController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("edificio", edificio);
         jsonObject.append("tipo", tipo);
-        String json = "nombrefuncion," + jsonObject.toString();
+        String json = "modificarEspacio," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
