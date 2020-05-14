@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestControlador {
+public class TestControlador {
 
     final Usuario usuario = new Usuario("Nombre", "Apellidos", "email@usuario.com", 123456, 123456789);
 
@@ -107,7 +107,7 @@ class TestControlador {
         busquedaDTO.setTipoEspacio("espacioPrueba");
         busquedaDTO.setPizarra(true);
         busquedaDTO.setProyector(true);
-        busquedaDTO.setCapacidad(10);
+        busquedaDTO.setCapacidad(99);
 
         JSONArray jsonRecivido = (JSONArray) reservaController.getFilteredReservas(busquedaDTO).getBody();
 

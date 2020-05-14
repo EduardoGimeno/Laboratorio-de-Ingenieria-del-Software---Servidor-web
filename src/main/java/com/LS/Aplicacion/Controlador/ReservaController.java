@@ -18,7 +18,7 @@ public class ReservaController {
     Emisor emisor;
 
     @PostMapping(path = "/createReserva")
-    public ResponseEntity crear(@RequestBody ReservaDTO reserva) throws Exception {
+    public ResponseEntity<Object> crear(@RequestBody ReservaDTO reserva) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(reserva);
         String json = "crearReserva," + dto;
@@ -34,7 +34,7 @@ public class ReservaController {
     }
 
     @PatchMapping(path = "/changeState/{id}")
-    public ResponseEntity cambiarEstado(@PathVariable String id, @RequestBody String estado, @RequestBody String motivo) throws Exception {
+    public ResponseEntity<Object> cambiarEstado(@PathVariable String id, @RequestBody String estado, @RequestBody String motivo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("id", id);
@@ -53,7 +53,7 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/getReservasByEspacio")
-    public ResponseEntity getReservasByEspacio(String idEspacio) throws Exception {
+    public ResponseEntity<Object> getReservasByEspacio(String idEspacio) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("idEspacio", idEspacio);
@@ -70,7 +70,7 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/getReservasFiltradas")
-    public ResponseEntity getFilteredReservas(BusquedaDTO busqueda) throws Exception {
+    public ResponseEntity<Object> getFilteredReservas(BusquedaDTO busqueda) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(busqueda);
         String json = "nombrefuncion," + dto;
