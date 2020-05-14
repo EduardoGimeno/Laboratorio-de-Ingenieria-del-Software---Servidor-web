@@ -84,6 +84,4 @@ public class ReservaController {
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
     }
-
-
 }
