@@ -190,7 +190,7 @@ public class TestControlador {
         List<Equipamiento> equipamiento = new ArrayList<>();
         equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
         jsonEsperado.append("equipamiento", equipamiento);
-        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 0));
         jsonEsperado.append("notas", "Nota de prueba");
         jsonArray.put(jsonEsperado);
 
