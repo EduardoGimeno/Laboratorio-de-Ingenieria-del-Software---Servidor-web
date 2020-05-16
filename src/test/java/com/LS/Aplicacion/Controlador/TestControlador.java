@@ -234,7 +234,7 @@ public class TestControlador {
         System.out.println(jsonRecibido);
 
         assert jsonRecibido != null;
-        assertEquals(true, jsonRecibido.toString());
+        assertEquals("true", jsonRecibido.toString());
 
     }
 }
