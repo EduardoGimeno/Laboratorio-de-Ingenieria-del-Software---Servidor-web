@@ -15,7 +15,7 @@ public class GerenteController {
     Emisor emisor;
 
     @PatchMapping(path = "/signIn")
-    public ResponseEntity signIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
+    public ResponseEntity<Object> signIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("nomUsuario", nomUsuario);

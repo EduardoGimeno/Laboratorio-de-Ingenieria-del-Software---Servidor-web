@@ -1,6 +1,7 @@
 package com.LS.Aplicacion.Controlador;
 
 import DTO.BusquedaDTO;
+import DTO.DatosDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -17,7 +18,7 @@ public class EspacioController {
     Emisor emisor;
 
     @GetMapping(path = "/getInfo")
-    public ResponseEntity obtenerInformacion (@RequestBody String id) throws Exception {
+    public ResponseEntity<Object> obtenerInformacion (@RequestBody String id) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("id", id);
@@ -34,7 +35,7 @@ public class EspacioController {
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity buscar (@RequestBody BusquedaDTO busqueda) throws Exception {
+    public ResponseEntity<Object> buscar (@RequestBody BusquedaDTO busqueda) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(busqueda);
         String json = "nombrefuncion," + dto;
@@ -50,7 +51,7 @@ public class EspacioController {
     }
 
     @GetMapping(path = "/getInfoFiltered")
-    public ResponseEntity obtenerPorEdificioYTipo (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
+    public ResponseEntity<Object> obtenerPorEdificioYTipo (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("edificio", edificio);
@@ -68,12 +69,10 @@ public class EspacioController {
     }
 
     @PatchMapping(path = "/modifySpace")
-    public ResponseEntity modificarDatos (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
+    public ResponseEntity<Object> modificarDatos (@RequestBody DatosDTO datosDTO) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.append("edificio", edificio);
-        jsonObject.append("tipo", tipo);
-        String json = "modificarEspacio," + jsonObject.toString();
+        String dto = mapper.writeValueAsString(datosDTO);
+        String json = "modificarEspacio," + dto;
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {

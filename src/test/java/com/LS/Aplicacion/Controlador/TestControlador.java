@@ -1,10 +1,9 @@
 package com.LS.Aplicacion.Controlador;
 
 import DTO.BusquedaDTO;
+import DTO.DatosDTO;
 import DTO.ReservaDTO;
-import ObjetoValor.Dia;
-import ObjetoValor.EstadoReserva;
-import ObjetoValor.Usuario;
+import ObjetoValor.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -127,5 +126,113 @@ public class TestControlador {
         jsonArray.put(jsonEsperado);
 
         assertEquals(jsonArray, jsonRecivido);
+    }
+
+    /*--- Test EspacioController ---*/
+
+    EspacioController espacioController = new EspacioController();
+
+    @Test
+    public void puedeObtenerInformacion() throws Exception {
+
+        JSONObject jsonEsperado = new JSONObject();
+        jsonEsperado.append("id", "idPrueba");
+        jsonEsperado.append("tipo", "Laboratorio");
+        jsonEsperado.append("capacidad", 30);
+        List<Equipamiento> equipamiento = new ArrayList<>();
+        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        jsonEsperado.append("equipamiento", equipamiento);
+        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        jsonEsperado.append("notas", "Nota de prueba");
+
+        JSONObject jsonRecivido = (JSONObject) espacioController.obtenerInformacion("idPrueba").getBody();
+
+        assertEquals(jsonEsperado, jsonRecivido);
+    }
+
+    @Test
+    public void puedeBuscar() throws Exception {
+
+        BusquedaDTO busquedaDTO = new BusquedaDTO();
+        busquedaDTO.setEdificio("Ada Byron");
+        busquedaDTO.setTipoEspacio("Laboratorio");
+        busquedaDTO.setPizarra(true);
+        busquedaDTO.setProyector(false);
+        busquedaDTO.setCapacidad(30);
+
+        JSONArray jsonRecivido = (JSONArray) espacioController.buscar(busquedaDTO).getBody();
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonEsperado = new JSONObject();
+        jsonEsperado.append("id", "idPrueba");
+        jsonEsperado.append("tipo", "Laboratorio");
+        jsonEsperado.append("capacidad", 30);
+        List<Equipamiento> equipamiento = new ArrayList<>();
+        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        jsonEsperado.append("equipamiento", equipamiento);
+        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        jsonEsperado.append("notas", "Nota de prueba");
+        jsonArray.put(jsonEsperado);
+
+        assertEquals(jsonArray, jsonRecivido);
+    }
+
+    @Test
+    public void puedeFiltrarPorEdificioYTipo() throws Exception {
+
+        JSONArray jsonRecivido = (JSONArray) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody();
+
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonEsperado = new JSONObject();
+        jsonEsperado.append("id", "idPrueba");
+        jsonEsperado.append("tipo", "Laboratorio");
+        jsonEsperado.append("capacidad", 30);
+        List<Equipamiento> equipamiento = new ArrayList<>();
+        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        jsonEsperado.append("equipamiento", equipamiento);
+        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        jsonEsperado.append("notas", "Nota de prueba");
+        jsonArray.put(jsonEsperado);
+
+        assertEquals(jsonArray, jsonRecivido);
+    }
+
+    @Test
+    public void puedeModificarDatos() throws Exception {
+
+        DatosDTO datosDTO = new DatosDTO();
+        datosDTO.setId("idPrueba");
+        datosDTO.setPizarra(true);
+        datosDTO.setProyector(true);
+        datosDTO.setCapacidad(30);
+
+        JSONObject jsonRecivido = (JSONObject) espacioController.modificarDatos(datosDTO).getBody();
+
+        JSONObject jsonEsperado = new JSONObject();
+        jsonEsperado.append("id", "idPrueba");
+        jsonEsperado.append("tipo", "Laboratorio");
+        jsonEsperado.append("capacidad", 30);
+        List<Equipamiento> equipamiento = new ArrayList<>();
+        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        equipamiento.add(new Equipamiento(TipoEquipamiento.CANON, 1, 1));
+        jsonEsperado.append("equipamiento", equipamiento);
+        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        jsonEsperado.append("notas", "Nota de prueba");
+
+        assertEquals(jsonEsperado, jsonRecivido);
+    }
+
+    /*--- Test GerenteController ---*/
+
+    GerenteController gerenteController = new GerenteController();
+
+    @Test
+    public void puedeLoguear() throws Exception {
+
+        JSONObject jsonEsperado = (JSONObject) gerenteController.signIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody();
+
+        assert jsonEsperado != null;
+        assertNotEquals("", jsonEsperado.toString());
+
     }
 }
