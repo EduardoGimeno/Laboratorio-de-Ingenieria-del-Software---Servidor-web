@@ -222,6 +222,24 @@ public class TestControlador {
         assertEquals(jsonEsperado, jsonRecibido);
     }
 
+    @Test
+    public void puedeObtenerHorarioEntreFechas() throws Exception {
+
+        JSONObject jsonRecibido = (JSONObject) espacioController.obtenerHorarioEntreFechas("idEspacio", Timestamp.valueOf("2007-09-23 10:10:10.0"), Timestamp.valueOf("2007-09-23 10:10:10.0")).getBody();
+
+        JSONObject jsonEsperado = new JSONObject();
+        jsonEsperado.append("idEspacio", "idPrueba");
+        jsonEsperado.append("dia", "Laboratorio");
+        jsonEsperado.append("horaInicio", 9);
+        jsonEsperado.append("horaFin", 21);
+        List<Integer> horasOcupadas = new ArrayList<>();
+        horasOcupadas.add(9);
+        horasOcupadas.add(10);
+        jsonEsperado.append("horasOcupadas", horasOcupadas);
+
+        assertEquals(jsonEsperado, jsonRecibido);
+    }
+
     /*--- Test GerenteController ---*/
 
     GerenteController gerenteController = new GerenteController();

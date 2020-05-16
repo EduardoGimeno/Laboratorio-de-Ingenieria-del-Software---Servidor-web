@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.Timestamp;
+
 public class EspacioController {
 
     @Autowired
@@ -38,7 +40,7 @@ public class EspacioController {
     public ResponseEntity<Object> buscar (@RequestBody BusquedaDTO busqueda) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(busqueda);
-        String json = "nombrefuncion," + dto;
+        String json = "filtrarBusquedaEspacios," + dto;
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
@@ -73,6 +75,24 @@ public class EspacioController {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(datosDTO);
         String json = "modificarEspacio," + dto;
+        emisor.enviarMensaje(json);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+        }
+    }
+
+    @PatchMapping(path = "/getSpacesBetween")
+    public ResponseEntity<Object> obtenerHorarioEntreFechas (@RequestBody String idEspacio, @RequestBody Timestamp inicio, @RequestBody Timestamp fin) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.append("idEspacio", idEspacio);
+        jsonObject.append("inicio", inicio);
+        jsonObject.append("fin", fin);
+        String json = "obtenerHorarioEntreFechas," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
