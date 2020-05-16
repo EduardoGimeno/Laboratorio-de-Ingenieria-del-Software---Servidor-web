@@ -57,7 +57,7 @@ public class TestControlador {
     @Test
     public void puedeCambiarEstadoReserva() throws Exception {
 
-        JSONObject jsonRecivido = (JSONObject) reservaController.cambiarEstado("idPrueba", "Aceptada", "Motivo de prueba").getBody();
+        JSONObject jsonRecibido = (JSONObject) reservaController.cambiarEstado("idPrueba", "Aceptada", "Motivo de prueba").getBody();
 
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.append("id", "idPrueba");
@@ -72,13 +72,13 @@ public class TestControlador {
         dias.add(Dia.LUNES);
         jsonEsperado.append("dias", dias);
 
-        assertEquals(jsonEsperado, jsonRecivido);
+        assertEquals(jsonEsperado, jsonRecibido);
     }
 
     @Test
     public void puedeBuscarReservasPorEspacio() throws Exception {
 
-        JSONArray jsonRecivido = (JSONArray) reservaController.getReservasByEspacio("idEspacio").getBody();
+        JSONArray jsonRecibido = (JSONArray) reservaController.getReservasByEspacio("idEspacio").getBody();
 
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonEsperado = new JSONObject();
@@ -95,7 +95,7 @@ public class TestControlador {
         jsonEsperado.append("dias", dias);
         jsonArray.put(jsonEsperado);
 
-        assertEquals(jsonArray, jsonRecivido);
+        assertEquals(jsonArray, jsonRecibido);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class TestControlador {
         busquedaDTO.setProyector(true);
         busquedaDTO.setCapacidad(99);
 
-        JSONArray jsonRecivido = (JSONArray) reservaController.getFilteredReservas(busquedaDTO).getBody();
+        JSONArray jsonRecibido = (JSONArray) reservaController.getFilteredReservas(busquedaDTO).getBody();
 
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonEsperado = new JSONObject();
@@ -125,7 +125,7 @@ public class TestControlador {
         jsonEsperado.append("dias", dias);
         jsonArray.put(jsonEsperado);
 
-        assertEquals(jsonArray, jsonRecivido);
+        assertEquals(jsonArray, jsonRecibido);
     }
 
     /*--- Test EspacioController ---*/
@@ -145,9 +145,9 @@ public class TestControlador {
         jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
         jsonEsperado.append("notas", "Nota de prueba");
 
-        JSONObject jsonRecivido = (JSONObject) espacioController.obtenerInformacion("idPrueba").getBody();
+        JSONObject jsonRecibido = (JSONObject) espacioController.obtenerInformacion("idPrueba").getBody();
 
-        assertEquals(jsonEsperado, jsonRecivido);
+        assertEquals(jsonEsperado, jsonRecibido);
     }
 
     @Test
@@ -160,7 +160,7 @@ public class TestControlador {
         busquedaDTO.setProyector(false);
         busquedaDTO.setCapacidad(30);
 
-        JSONArray jsonRecivido = (JSONArray) espacioController.buscar(busquedaDTO).getBody();
+        JSONArray jsonRecibido = (JSONArray) espacioController.buscar(busquedaDTO).getBody();
 
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonEsperado = new JSONObject();
@@ -174,13 +174,13 @@ public class TestControlador {
         jsonEsperado.append("notas", "Nota de prueba");
         jsonArray.put(jsonEsperado);
 
-        assertEquals(jsonArray, jsonRecivido);
+        assertEquals(jsonArray, jsonRecibido);
     }
 
     @Test
     public void puedeFiltrarPorEdificioYTipo() throws Exception {
 
-        JSONArray jsonRecivido = (JSONArray) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody();
+        JSONArray jsonRecibido = (JSONArray) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody();
 
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonEsperado = new JSONObject();
@@ -194,7 +194,7 @@ public class TestControlador {
         jsonEsperado.append("notas", "Nota de prueba");
         jsonArray.put(jsonEsperado);
 
-        assertEquals(jsonArray, jsonRecivido);
+        assertEquals(jsonArray, jsonRecibido);
     }
 
     @Test
@@ -206,7 +206,7 @@ public class TestControlador {
         datosDTO.setProyector(true);
         datosDTO.setCapacidad(30);
 
-        JSONObject jsonRecivido = (JSONObject) espacioController.modificarDatos(datosDTO).getBody();
+        JSONObject jsonRecibido = (JSONObject) espacioController.modificarDatos(datosDTO).getBody();
 
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.append("id", "idPrueba");
@@ -219,7 +219,7 @@ public class TestControlador {
         jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
         jsonEsperado.append("notas", "Nota de prueba");
 
-        assertEquals(jsonEsperado, jsonRecivido);
+        assertEquals(jsonEsperado, jsonRecibido);
     }
 
     /*--- Test GerenteController ---*/
@@ -229,10 +229,12 @@ public class TestControlador {
     @Test
     public void puedeLoguear() throws Exception {
 
-        JSONObject jsonEsperado = (JSONObject) gerenteController.signIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody();
+        JSONObject jsonRecibido = (JSONObject) gerenteController.logIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody();
 
-        assert jsonEsperado != null;
-        assertNotEquals("", jsonEsperado.toString());
+        System.out.println(jsonRecibido);
+
+        assert jsonRecibido != null;
+        assertEquals(true, jsonRecibido.toString());
 
     }
 }
