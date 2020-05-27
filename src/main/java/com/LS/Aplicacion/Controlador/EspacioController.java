@@ -20,7 +20,7 @@ public class EspacioController {
     Emisor emisor;
 
     @GetMapping(path = "/getInfo")
-    public ResponseEntity<Object> obtenerInformacion (@RequestBody String id) throws Exception {
+    public ResponseEntity<Object> obtenerInformacion(@RequestBody String id) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("id", id);
@@ -29,15 +29,14 @@ public class EspacioController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
         }
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<Object> buscar (@RequestBody BusquedaDTO busqueda) throws Exception {
+    public ResponseEntity<Object> buscar(@RequestBody BusquedaDTO busqueda) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(busqueda);
         String json = "filtrarBusquedaEspacios," + dto;
@@ -45,15 +44,14 @@ public class EspacioController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
         }
     }
 
     @GetMapping(path = "/getInfoFiltered")
-    public ResponseEntity<Object> obtenerPorEdificioYTipo (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
+    public ResponseEntity<Object> obtenerPorEdificioYTipo(@RequestBody String edificio, @RequestBody String tipo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("edificio", edificio);
@@ -63,15 +61,14 @@ public class EspacioController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
         }
     }
 
     @PatchMapping(path = "/modifySpace")
-    public ResponseEntity<Object> modificarDatos (@RequestBody DatosDTO datosDTO) throws Exception {
+    public ResponseEntity<Object> modificarDatos(@RequestBody DatosDTO datosDTO) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(datosDTO);
         String json = "modificarEspacio," + dto;
@@ -79,15 +76,14 @@ public class EspacioController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
         }
     }
 
     @PatchMapping(path = "/getSpacesBetween")
-    public ResponseEntity<Object> obtenerHorarioEntreFechas (@RequestBody String idEspacio, @RequestBody Timestamp inicio, @RequestBody Timestamp fin) throws Exception {
+    public ResponseEntity<Object> obtenerHorarioEntreFechas(@RequestBody String idEspacio, @RequestBody Timestamp inicio, @RequestBody Timestamp fin) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("idEspacio", idEspacio);
         jsonObject.append("inicio", inicio);
@@ -97,8 +93,7 @@ public class EspacioController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
         }

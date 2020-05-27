@@ -26,8 +26,7 @@ public class ReservaController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
@@ -45,8 +44,7 @@ public class ReservaController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
@@ -62,8 +60,7 @@ public class ReservaController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
@@ -78,8 +75,7 @@ public class ReservaController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
