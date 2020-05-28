@@ -20,7 +20,7 @@ public class EspacioController {
     public ResponseEntity obtenerInformacion (@RequestBody String id) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.append("id", id);
+        jsonObject.put("id", id);
         String json = "obtenerEspacioPorId," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
@@ -53,8 +53,8 @@ public class EspacioController {
     public ResponseEntity obtenerPorEdificioYTipo (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.append("edificio", edificio);
-        jsonObject.append("tipo", tipo);
+        jsonObject.put("edificio", edificio);
+        jsonObject.put("tipo", tipo);
         String json = "obtenerEspacioPorEdificioYTipo," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
@@ -71,8 +71,8 @@ public class EspacioController {
     public ResponseEntity modificarDatos (@RequestBody String edificio, @RequestBody String tipo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.append("edificio", edificio);
-        jsonObject.append("tipo", tipo);
+        jsonObject.put("edificio", edificio);
+        jsonObject.put("tipo", tipo);
         String json = "modificarEspacio," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
@@ -85,3 +85,4 @@ public class EspacioController {
         }
     }
 }
+

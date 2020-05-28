@@ -37,9 +37,9 @@ public class ReservaController {
     public ResponseEntity cambiarEstado(@PathVariable String id, @RequestBody String estado, @RequestBody String motivo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.append("id", id);
-        jsonObject.append("estado", estado);
-        jsonObject.append("motivo", motivo);
+        jsonObject.put("id", id);
+        jsonObject.put("estado", estado);
+        jsonObject.put("motivo", motivo);
         String json = "modificarEstadoReserva," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
@@ -56,7 +56,7 @@ public class ReservaController {
     public ResponseEntity getReservasByEspacio(String idEspacio) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.append("idEspacio", idEspacio);
+        jsonObject.put("idEspacio", idEspacio);
         String json = "obtenerReservasEspacio," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
