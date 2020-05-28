@@ -15,7 +15,7 @@ public class GerenteController {
     Emisor emisor;
 
     @PatchMapping(path = "/signIn")
-    public ResponseEntity signIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
+    public ResponseEntity<Object> logIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.append("nomUsuario", nomUsuario);
@@ -25,8 +25,7 @@ public class GerenteController {
         String response = emisor.recibirMensaje();
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        }
-        else {
+        } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
             //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, GerenteDTO.class));
         }
