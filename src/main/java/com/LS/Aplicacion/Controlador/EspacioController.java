@@ -49,10 +49,8 @@ public class EspacioController {
                                          int horaFin, Dia[] dias, boolean periodo) throws Exception {
 
         Timestamp fechaInicioTime = new Timestamp(fechaInicio);
-        fechaInicioTime.setYear(fechaInicioTime.getYear() + 1900);
 
         Timestamp fechaFinTime = new Timestamp(fechaFin);
-        fechaFinTime.setYear(fechaFinTime.getYear() + 1900);
 
         List<Dia> diasLista = new ArrayList<>();
         Collections.addAll(diasLista, dias);
