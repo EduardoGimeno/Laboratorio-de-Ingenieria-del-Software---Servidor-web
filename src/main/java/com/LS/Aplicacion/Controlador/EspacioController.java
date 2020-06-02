@@ -1,26 +1,34 @@
 package com.LS.Aplicacion.Controlador;
 
 import DTO.BusquedaDTO;
+import Enum.*;
 import DTO.DatosDTO;
+import DTO.EquipamientoDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+@Controller("EspacioController")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,
+        RequestMethod.DELETE,RequestMethod.PATCH})
+@RequestMapping(path="/espacio")
 public class EspacioController {
 
     @Autowired
     Emisor emisor;
 
     @GetMapping(path = "/getInfo")
-    public ResponseEntity<Object> obtenerInformacion(@RequestBody String id) throws Exception {
+    public ResponseEntity<Object> obtenerInformacion(String id) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
@@ -36,12 +44,47 @@ public class EspacioController {
     }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<Object> buscar(@RequestBody BusquedaDTO busqueda) throws Exception {
+    public ResponseEntity<Object> buscar(String edificio, String tipoEspacio, String[] equipamiento,
+                                         int capacidad, long fechaInicio, long fechaFin, int horaInicio,
+                                         int horaFin, Dia[] dias, boolean periodo) throws Exception {
+
+        Timestamp fechaInicioTime = new Timestamp(fechaInicio);
+        fechaInicioTime.setYear(fechaInicioTime.getYear() + 1900);
+
+        Timestamp fechaFinTime = new Timestamp(fechaFin);
+        fechaFinTime.setYear(fechaFinTime.getYear() + 1900);
+
+        List<Dia> diasLista = new ArrayList<>();
+        Collections.addAll(diasLista, dias);
+
+        List<EquipamientoDTO> equipamientoLista = new ArrayList<>();
+        for (String s : equipamiento) {
+            EquipamientoDTO e = new EquipamientoDTO();
+            String[] eSplit = s.split(";");
+            e.setTipo(TipoEquipamiento.valueOf(eSplit[0]));
+            e.setCantidad(Integer.parseInt(eSplit[1]));
+            equipamientoLista.add(e);
+        }
+
+        BusquedaDTO busqueda = new BusquedaDTO();
+        busqueda.setEdificio(edificio);
+        busqueda.setTipoEspacio(tipoEspacio);
+        busqueda.setCapacidad(capacidad);
+        busqueda.setFechaInicio(fechaInicioTime);
+        busqueda.setFechaFin(fechaFinTime);
+        busqueda.setHoraInicio(horaInicio);
+        busqueda.setHoraFin(horaFin);
+        busqueda.setEquipamiento(equipamientoLista);
+        busqueda.setDias(diasLista);
+        busqueda.setPeriodo(periodo);
+
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(busqueda);
         String json = "filtrarBusquedaEspacios," + dto;
+        System.out.println(json);
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
+        System.out.println(response);
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
