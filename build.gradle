@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id "org.sonarqube" version "2.8"
+	id "jacoco"
 }
 
 group = 'com.LS'
@@ -28,4 +30,24 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+sonarqube {
+	properties {
+		property "sonar.projectKey", "UNIZAR-30249-2020-GRUPO02_Servidor-Web"
+		property "sonar.host.url", "https://sonarcloud.io"
+	}
+}
+
+jacoco {
+	toolVersion = "0.8.2"
+	reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+apply plugin: 'jacoco'
+
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
 }
