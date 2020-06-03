@@ -40,6 +40,7 @@ public class TestControlador {
         reservaDTO.setEstado(EstadoReserva.PENDIENTE);
         reservaDTO.setUsuario(usuario);
         reservaDTO.setIdEspacio("idEspacioPrueba");
+        reservaDTO.setDias(new ArrayList<>());
         reservaDTO.addDia(Dia.LUNES);
 
         JSONObject jsonRecivido = (JSONObject) reservaController.crear(reservaDTO).getBody();
