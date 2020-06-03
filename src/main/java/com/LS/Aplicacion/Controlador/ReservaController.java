@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@Controller("ReservaController")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,
+        RequestMethod.DELETE,RequestMethod.PATCH})
+@RequestMapping(path="/reserva")
 public class ReservaController {
 
     @Autowired
