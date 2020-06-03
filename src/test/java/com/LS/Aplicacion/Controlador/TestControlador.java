@@ -1,9 +1,7 @@
 package com.LS.Aplicacion.Controlador;
 
-import DTO.BusquedaDTO;
-import DTO.DatosDTO;
-import DTO.ReservaDTO;
-import ObjetoValor.*;
+import DTO.*;
+import Enum.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestControlador {
 
-    final Usuario usuario = new Usuario("Nombre", "Apellidos", "email@usuario.com", 123456, 123456789);
+    final UsuarioDTO usuario = new UsuarioDTO();
+
+    public TestControlador() {
+        usuario.setNombre("Nombre");
+        usuario.setApellidos("Apellidos");
+        usuario.setEmail("email@usuario.com");
+        usuario.setNIA(123456);
+        usuario.setTelefono(123456789);
+    }
 
     /*--- Test ReservaController ---*/
 
@@ -27,10 +33,10 @@ public class TestControlador {
 
         ReservaDTO reservaDTO = new ReservaDTO();
         reservaDTO.setId("idPrueba");
-        reservaDTO.setHoraInicio(Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        reservaDTO.setHoraFin(Timestamp.valueOf("2007-09-23 10:10:10.0"));
+        reservaDTO.setHoraInicio(10);
+        reservaDTO.setHoraFin(11);
         reservaDTO.setFechaInicio(Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        reservaDTO.setFechaFin(Timestamp.valueOf("2007-09-23 10:10:10.0"));
+        reservaDTO.setFechaFin(Timestamp.valueOf("2007-09-23 11:10:10.0"));
         reservaDTO.setEstado(EstadoReserva.PENDIENTE);
         reservaDTO.setUsuario(usuario);
         reservaDTO.setIdEspacio("idEspacioPrueba");
@@ -104,8 +110,6 @@ public class TestControlador {
         BusquedaDTO busquedaDTO = new BusquedaDTO();
         busquedaDTO.setEdificio("edicioPrueba");
         busquedaDTO.setTipoEspacio("espacioPrueba");
-        busquedaDTO.setPizarra(true);
-        busquedaDTO.setProyector(true);
         busquedaDTO.setCapacidad(99);
 
         JSONArray jsonRecibido = (JSONArray) reservaController.getFilteredReservas(busquedaDTO).getBody();
@@ -139,10 +143,17 @@ public class TestControlador {
         jsonEsperado.append("id", "idPrueba");
         jsonEsperado.append("tipo", "Laboratorio");
         jsonEsperado.append("capacidad", 30);
-        List<Equipamiento> equipamiento = new ArrayList<>();
-        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        List<EquipamientoDTO> equipamiento = new ArrayList<>();
+        EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
+        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setCantidad(1);
+        equipamientoDTO.setMaxCantidad(1);
+        equipamiento.add(equipamientoDTO);
         jsonEsperado.append("equipamiento", equipamiento);
-        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        UbicacionDTO ubicacionDTO = new UbicacionDTO();
+        ubicacionDTO.setEdificio("Ada Byron");
+        ubicacionDTO.setPlanta(1);
+        jsonEsperado.append("ubicacion", ubicacionDTO);
         jsonEsperado.append("notas", "Nota de prueba");
 
         JSONObject jsonRecibido = (JSONObject) espacioController.obtenerInformacion("idPrueba").getBody();
@@ -153,24 +164,25 @@ public class TestControlador {
     @Test
     public void puedeBuscar() throws Exception {
 
-        BusquedaDTO busquedaDTO = new BusquedaDTO();
-        busquedaDTO.setEdificio("Ada Byron");
-        busquedaDTO.setTipoEspacio("Laboratorio");
-        busquedaDTO.setPizarra(true);
-        busquedaDTO.setProyector(false);
-        busquedaDTO.setCapacidad(30);
 
-        JSONArray jsonRecibido = (JSONArray) espacioController.buscar(busquedaDTO).getBody();
+        JSONArray jsonRecibido = (JSONArray) espacioController.buscar("Ada Byron", "Laboratorio", new String[]{}, 30, Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), 10, 11, new Dia[]{}, false).getBody();
 
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.append("id", "idPrueba");
         jsonEsperado.append("tipo", "Laboratorio");
         jsonEsperado.append("capacidad", 30);
-        List<Equipamiento> equipamiento = new ArrayList<>();
-        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        List<EquipamientoDTO> equipamiento = new ArrayList<>();
+        EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
+        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setCantidad(1);
+        equipamientoDTO.setMaxCantidad(1);
+        equipamiento.add(equipamientoDTO);
         jsonEsperado.append("equipamiento", equipamiento);
-        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        UbicacionDTO ubicacionDTO = new UbicacionDTO();
+        ubicacionDTO.setEdificio("Ada Byron");
+        ubicacionDTO.setPlanta(1);
+        jsonEsperado.append("ubicacion", ubicacionDTO);
         jsonEsperado.append("notas", "Nota de prueba");
         jsonArray.put(jsonEsperado);
 
@@ -187,10 +199,17 @@ public class TestControlador {
         jsonEsperado.append("id", "idPrueba");
         jsonEsperado.append("tipo", "Laboratorio");
         jsonEsperado.append("capacidad", 30);
-        List<Equipamiento> equipamiento = new ArrayList<>();
-        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
+        List<EquipamientoDTO> equipamiento = new ArrayList<>();
+        EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
+        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setCantidad(1);
+        equipamientoDTO.setMaxCantidad(1);
+        equipamiento.add(equipamientoDTO);
         jsonEsperado.append("equipamiento", equipamiento);
-        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 0));
+        UbicacionDTO ubicacionDTO = new UbicacionDTO();
+        ubicacionDTO.setEdificio("Ada Byron");
+        ubicacionDTO.setPlanta(1);
+        jsonEsperado.append("ubicacion", ubicacionDTO);
         jsonEsperado.append("notas", "Nota de prueba");
         jsonArray.put(jsonEsperado);
 
@@ -202,8 +221,6 @@ public class TestControlador {
 
         DatosDTO datosDTO = new DatosDTO();
         datosDTO.setId("idPrueba");
-        datosDTO.setPizarra(true);
-        datosDTO.setProyector(true);
         datosDTO.setCapacidad(30);
 
         JSONObject jsonRecibido = (JSONObject) espacioController.modificarDatos(datosDTO).getBody();
@@ -212,11 +229,17 @@ public class TestControlador {
         jsonEsperado.append("id", "idPrueba");
         jsonEsperado.append("tipo", "Laboratorio");
         jsonEsperado.append("capacidad", 30);
-        List<Equipamiento> equipamiento = new ArrayList<>();
-        equipamiento.add(new Equipamiento(TipoEquipamiento.PIZARRA, 1, 1));
-        equipamiento.add(new Equipamiento(TipoEquipamiento.CANON, 1, 1));
+        List<EquipamientoDTO> equipamiento = new ArrayList<>();
+        EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
+        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setCantidad(1);
+        equipamientoDTO.setMaxCantidad(1);
+        equipamiento.add(equipamientoDTO);
         jsonEsperado.append("equipamiento", equipamiento);
-        jsonEsperado.append("ubicacion", new Ubicacion("Ada Byron", 1));
+        UbicacionDTO ubicacionDTO = new UbicacionDTO();
+        ubicacionDTO.setEdificio("Ada Byron");
+        ubicacionDTO.setPlanta(1);
+        jsonEsperado.append("ubicacion", ubicacionDTO);
         jsonEsperado.append("notas", "Nota de prueba");
 
         assertEquals(jsonEsperado, jsonRecibido);
