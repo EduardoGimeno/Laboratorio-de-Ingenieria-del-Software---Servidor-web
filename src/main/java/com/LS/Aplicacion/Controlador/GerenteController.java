@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class GerenteController {
 
     @Autowired
-    Emisor emisor;
+    Emisor emisor = new Emisor();
+
+    public GerenteController() throws Exception {
+    }
 
     @PatchMapping(path = "/signIn")
     public ResponseEntity<Object> logIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {

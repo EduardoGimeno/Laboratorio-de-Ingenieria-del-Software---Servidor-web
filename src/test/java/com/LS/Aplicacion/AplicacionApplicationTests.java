@@ -9,6 +9,9 @@ class AplicacionApplicationTests {
 
     TestControlador testControlador = new TestControlador();
 
+    AplicacionApplicationTests() throws Exception {
+    }
+
     @Test
     void main() throws Exception {
         System.out.println("Ejecutando test del controlador...");

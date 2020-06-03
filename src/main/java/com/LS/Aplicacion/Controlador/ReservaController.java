@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 public class ReservaController {
 
     @Autowired
-    Emisor emisor;
+    Emisor emisor = new Emisor();
+
+    public ReservaController() throws Exception {
+    }
 
     @PostMapping(path = "/createReserva")
     public ResponseEntity<Object> crear(@RequestBody ReservaDTO reserva) throws Exception {
@@ -49,7 +52,6 @@ public class ReservaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
     }
 
@@ -65,7 +67,6 @@ public class ReservaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
     }
 
@@ -80,7 +81,6 @@ public class ReservaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
         }
     }
 }

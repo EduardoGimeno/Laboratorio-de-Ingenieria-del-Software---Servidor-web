@@ -16,7 +16,7 @@ public class TestControlador {
 
     final UsuarioDTO usuario = new UsuarioDTO();
 
-    public TestControlador() {
+    public TestControlador() throws Exception {
         usuario.setNombre("Nombre");
         usuario.setApellidos("Apellidos");
         usuario.setEmail("email@usuario.com");

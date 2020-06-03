@@ -25,7 +25,10 @@ import java.util.List;
 public class EspacioController {
 
     @Autowired
-    Emisor emisor;
+    Emisor emisor = new Emisor();
+
+    public EspacioController() throws Exception {
+    }
 
     @GetMapping(path = "/getInfo")
     public ResponseEntity<Object> obtenerInformacion(String id) throws Exception {
