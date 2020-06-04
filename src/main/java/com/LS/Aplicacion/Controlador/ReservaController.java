@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+
 @Controller("ReservaController")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,
         RequestMethod.DELETE,RequestMethod.PATCH})
@@ -70,6 +72,24 @@ public class ReservaController {
         }
     }
 
+    @GetMapping(path = "/getHorarios")
+    public ResponseEntity<Object> getHorarios(String idEspacio, long fechaInicio,
+                                              long fechaFin) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("idEspacio", idEspacio);
+        jsonObject.put("fechaInicio", fechaInicio);
+        jsonObject.put("fechaFin", fechaFin);
+        String json = "obtenerHorarioEntreFechas," + jsonObject.toString();
+        emisor.enviarMensaje(json);
+        String response = emisor.recibirMensaje();
+        if (response.equals("error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        } else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+        }
+    }
+
+    //??
     @GetMapping(path = "/getReservasFiltradas")
     public ResponseEntity<Object> getFilteredReservas(BusquedaDTO busqueda) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
