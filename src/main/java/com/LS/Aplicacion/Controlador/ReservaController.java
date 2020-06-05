@@ -11,12 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-
 @Controller("ReservaController")
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,
-        RequestMethod.DELETE,RequestMethod.PATCH})
-@RequestMapping(path="/reserva")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+        RequestMethod.DELETE, RequestMethod.PATCH})
+@RequestMapping(path = "/reserva")
 public class ReservaController {
 
     @Autowired
@@ -32,11 +30,10 @@ public class ReservaController {
         String json = "crearReserva," + dto;
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, ReservaDTO.class));
+            return ResponseEntity.status(HttpStatus.CREATED).body(JSONObject.stringToValue(response));
         }
     }
 
@@ -50,10 +47,10 @@ public class ReservaController {
         String json = "modificarEstadoReserva," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
@@ -65,10 +62,10 @@ public class ReservaController {
         String json = "obtenerReservasEspacio," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
@@ -82,25 +79,25 @@ public class ReservaController {
         String json = "obtenerHorarioEntreFechas," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
     //??
-    @GetMapping(path = "/getReservasFiltradas")
-    public ResponseEntity<Object> getFilteredReservas(BusquedaDTO busqueda) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        String dto = mapper.writeValueAsString(busqueda);
-        String json = "nombrefuncion," + dto;
-        emisor.enviarMensaje(json);
-        String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-        }
-    }
+//    @GetMapping(path = "/getReservasFiltradas")
+//    public ResponseEntity<Object> getFilteredReservas(BusquedaDTO busqueda) throws Exception {
+//        ObjectMapper mapper = new ObjectMapper();
+//        String dto = mapper.writeValueAsString(busqueda);
+//        String json = "nombrefuncion," + dto;
+//        emisor.enviarMensaje(json);
+//        String response = emisor.recibirMensaje();
+//        if (response.equals("ERROR")) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
+//        }
+//    }
 }

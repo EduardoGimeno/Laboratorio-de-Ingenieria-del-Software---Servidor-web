@@ -19,12 +19,14 @@ class AplicacionApplicationTests {
         testControlador.puedeCrearReserva();
         testControlador.puedeCambiarEstadoReserva();
         testControlador.puedeBuscarReservasPorEspacio();
-        testControlador.puedeFiltrarReservas();
+        testControlador.puedeObtenerHorarioDeEspacio();
+        //testControlador.puedeFiltrarReservas();
         System.out.println("Controlador espacios...");
         testControlador.puedeObtenerInformacion();
         testControlador.puedeBuscar();
         testControlador.puedeFiltrarPorEdificioYTipo();
         testControlador.puedeModificarDatos();
+        testControlador.puedeObtenerHorarioEntreFechas();
         System.out.println("Controlador gerente...");
         testControlador.puedeLoguear();
         System.out.println("Test del controlador pasados");

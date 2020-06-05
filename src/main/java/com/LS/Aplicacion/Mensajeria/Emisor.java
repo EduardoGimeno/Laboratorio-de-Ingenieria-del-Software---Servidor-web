@@ -1,6 +1,9 @@
 package com.LS.Aplicacion.Mensajeria;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.GetResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,13 +13,12 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class Emisor {
 
-    private Logger log = LoggerFactory.getLogger(Emisor.class);
+    private final Logger log = LoggerFactory.getLogger(Emisor.class);
 
     private final static String COLA_ENTRADA = "entrada";
     private final static String COLA_SALIDA = "salida";
     private final static String ENV_AMQPURL_NAME = "CLOUDAMQP_URL";
-    private Channel canal;
-
+    private final Channel canal;
 
 
     public Emisor() throws Exception {
@@ -25,7 +27,7 @@ public class Emisor {
                 System.getenv().get(ENV_AMQPURL_NAME) : "amqp://localhost";
         try {
             factoria.setUri(amqpURL);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(" [*] AQMP broker no encontrado en " + amqpURL);
             System.exit(-1);
         }

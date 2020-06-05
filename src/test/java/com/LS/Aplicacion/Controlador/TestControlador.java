@@ -1,20 +1,26 @@
 package com.LS.Aplicacion.Controlador;
 
 import DTO.*;
-import Enum.*;
+import Enum.Dia;
+import Enum.EstadoReserva;
+import Enum.TipoEquipamiento;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestControlador {
 
     final UsuarioDTO usuario = new UsuarioDTO();
+
+    String idPrueba = "";
 
     public TestControlador() throws Exception {
         usuario.setNombre("Nombre");
@@ -39,98 +45,109 @@ public class TestControlador {
         reservaDTO.setFechaFin(Timestamp.valueOf("2007-09-23 11:10:10.0"));
         reservaDTO.setEstado(EstadoReserva.PENDIENTE);
         reservaDTO.setUsuario(usuario);
-        reservaDTO.setIdEspacio("idEspacioPrueba");
+        reservaDTO.setIdEspacio("CRE.1200.03.060");
         reservaDTO.setDias(new ArrayList<>());
         reservaDTO.addDia(Dia.LUNES);
 
-        JSONObject jsonRecivido = (JSONObject) reservaController.crear(reservaDTO).getBody();
+        JSONObject jsonRecibido = new JSONObject((String) reservaController.crear(reservaDTO).getBody());
 
-        JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("horaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("horaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("estado", EstadoReserva.PENDIENTE);
-        jsonEsperado.append("usuario", usuario);
-        jsonEsperado.append("idEspacio", "idEspacioPrueba");
-        List<Dia> dias = new ArrayList<>();
-        dias.add(Dia.LUNES);
-        jsonEsperado.append("dias", dias);
+        idPrueba = (String) jsonRecibido.get("id");
 
-        assertEquals(jsonEsperado, jsonRecivido);
+        assertEquals(10, jsonRecibido.get("horaInicio"));
+        assertEquals(11, jsonRecibido.get("horaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), jsonRecibido.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 11:10:10.0").getTime(), jsonRecibido.get("fechaFin"));
+        assertEquals(EstadoReserva.PENDIENTE.getEstado().toUpperCase(), jsonRecibido.get("estado"));
+        JSONObject objectUsuario = (JSONObject) jsonRecibido.get("usuario");
+        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
+        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
+        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
+        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
+        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
     }
 
     @Test
     public void puedeCambiarEstadoReserva() throws Exception {
 
-        JSONObject jsonRecibido = (JSONObject) reservaController.cambiarEstado("idPrueba", "Aceptada", "Motivo de prueba").getBody();
+        JSONObject jsonRecibido = new JSONObject((String) reservaController.cambiarEstado(idPrueba, "ACEPTADA", "Motivo de prueba").getBody());
 
-        JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("horaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("horaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("estado", EstadoReserva.ACEPTADA);
-        jsonEsperado.append("usuario", usuario);
-        jsonEsperado.append("idEspacio", "idEspacioPrueba");
-        List<Dia> dias = new ArrayList<>();
-        dias.add(Dia.LUNES);
-        jsonEsperado.append("dias", dias);
-
-        assertEquals(jsonEsperado, jsonRecibido);
+        assertEquals(10, jsonRecibido.get("horaInicio"));
+        assertEquals(11, jsonRecibido.get("horaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), jsonRecibido.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 11:10:10.0").getTime(), jsonRecibido.get("fechaFin"));
+        assertEquals(EstadoReserva.ACEPTADA.getEstado().toUpperCase(), jsonRecibido.get("estado"));
+        JSONObject objectUsuario = (JSONObject) jsonRecibido.get("usuario");
+        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
+        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
+        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
+        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
+        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
     }
 
     @Test
     public void puedeBuscarReservasPorEspacio() throws Exception {
 
-        JSONArray jsonRecibido = (JSONArray) reservaController.getReservasByEspacio("idEspacio").getBody();
+        JSONArray jsonRecibido = new JSONArray((String) reservaController.getReservasByEspacio("CRE.1200.03.060").getBody());
+
+        JSONObject jsonObject = (JSONObject) jsonRecibido.get(jsonRecibido.length() - 1);
+        assertEquals(10, jsonObject.get("horaInicio"));
+        assertEquals(11, jsonObject.get("horaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), jsonObject.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 11:10:10.0").getTime(), jsonObject.get("fechaFin"));
+        assertEquals(EstadoReserva.ACEPTADA.getEstado().toUpperCase(), jsonObject.get("estado"));
+        JSONObject objectUsuario = (JSONObject) jsonObject.get("usuario");
+        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
+        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
+        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
+        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
+        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
+    }
+
+    @Test
+    public void puedeObtenerHorarioDeEspacio() throws Exception {
+
+        JSONArray jsonRecibido = new JSONArray((String) reservaController.getHorarios("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), Timestamp.valueOf("2007-09-23 0:0:0.0").getTime()).getBody());
 
         JSONArray jsonArray = new JSONArray();
+        // JSON para HorarioDTO
         JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("horaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("horaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("estado", EstadoReserva.ACEPTADA);
-        jsonEsperado.append("usuario", usuario);
-        jsonEsperado.append("idEspacio", "idEspacioPrueba");
-        List<Dia> dias = new ArrayList<>();
-        dias.add(Dia.LUNES);
-        jsonEsperado.append("dias", dias);
+        jsonEsperado.put("idEspacio", "CRE.1200.03.060");
+        jsonEsperado.put("dia", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime());
+        jsonEsperado.put("horaInicio", 8);
+        jsonEsperado.put("horaFin", 22);
+        List<Integer> horasOcupadas = new ArrayList<>();
+        jsonEsperado.put("horasOcupadas", horasOcupadas);
         jsonArray.put(jsonEsperado);
 
-        assertEquals(jsonArray, jsonRecibido);
+        assertEquals(jsonArray.toString(), jsonRecibido.toString());
     }
 
     @Test
     public void puedeFiltrarReservas() throws Exception {
 
-        BusquedaDTO busquedaDTO = new BusquedaDTO();
-        busquedaDTO.setEdificio("edicioPrueba");
-        busquedaDTO.setTipoEspacio("espacioPrueba");
-        busquedaDTO.setCapacidad(99);
-
-        JSONArray jsonRecibido = (JSONArray) reservaController.getFilteredReservas(busquedaDTO).getBody();
-
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("horaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("horaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("fechaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        jsonEsperado.append("estado", EstadoReserva.ACEPTADA);
-        jsonEsperado.append("usuario", usuario);
-        jsonEsperado.append("idEspacio", "idEspacioPrueba");
-        List<Dia> dias = new ArrayList<>();
-        dias.add(Dia.LUNES);
-        jsonEsperado.append("dias", dias);
-        jsonArray.put(jsonEsperado);
-
-        assertEquals(jsonArray, jsonRecibido);
+//        BusquedaDTO busquedaDTO = new BusquedaDTO();
+//        busquedaDTO.setEdificio("Ada Byron");
+//        busquedaDTO.setTipoEspacio("Laboratorio");
+//        busquedaDTO.setCapacidad(60);
+//
+//        JSONArray jsonRecibido = new JSONArray((String) reservaController.getFilteredReservas(busquedaDTO).getBody());
+//
+//        JSONArray jsonArray = new JSONArray();
+//        JSONObject jsonEsperado = new JSONObject();
+//        jsonEsperado.put("id", "idPrueba");
+//        jsonEsperado.put("horaInicio", 10);
+//        jsonEsperado.put("horaFin", 11);
+//        jsonEsperado.put("fechaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
+//        jsonEsperado.put("fechaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
+//        jsonEsperado.put("estado", EstadoReserva.ACEPTADA);
+//        jsonEsperado.put("usuario", usuario);
+//        jsonEsperado.put("idEspacio", "idEspacioPrueba");
+//        List<Dia> dias = new ArrayList<>();
+//        dias.add(Dia.LUNES);
+//        jsonEsperado.put("dias", dias);
+//        jsonArray.put(jsonEsperado);
+//
+//        assertEquals(jsonArray, jsonRecibido);
     }
 
     /*--- Test EspacioController ---*/
@@ -141,127 +158,181 @@ public class TestControlador {
     public void puedeObtenerInformacion() throws Exception {
 
         JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("tipo", "Laboratorio");
-        jsonEsperado.append("capacidad", 30);
+        jsonEsperado.put("id", "CRE.1200.03.060");
+        jsonEsperado.put("tipo", "Laboratorio");
+        jsonEsperado.put("nombre", "LABORATORIO L 3.04");
+        jsonEsperado.put("capacidad", 60);
         List<EquipamientoDTO> equipamiento = new ArrayList<>();
         EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
-        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setTipo(TipoEquipamiento.PANTALLA);
         equipamientoDTO.setCantidad(1);
         equipamientoDTO.setMaxCantidad(1);
         equipamiento.add(equipamientoDTO);
-        jsonEsperado.append("equipamiento", equipamiento);
+        EquipamientoDTO equipamientoDTO2 = new EquipamientoDTO();
+        equipamientoDTO2.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO2.setCantidad(5);
+        equipamientoDTO2.setMaxCantidad(5);
+        equipamiento.add(equipamientoDTO2);
+        EquipamientoDTO equipamientoDTO3 = new EquipamientoDTO();
+        equipamientoDTO3.setTipo(TipoEquipamiento.ORDENADOR);
+        equipamientoDTO3.setCantidad(30);
+        equipamientoDTO3.setMaxCantidad(30);
+        equipamiento.add(equipamientoDTO3);
+        jsonEsperado.put("equipamiento", equipamiento);
         UbicacionDTO ubicacionDTO = new UbicacionDTO();
         ubicacionDTO.setEdificio("Ada Byron");
-        ubicacionDTO.setPlanta(1);
-        jsonEsperado.append("ubicacion", ubicacionDTO);
-        jsonEsperado.append("notas", "Nota de prueba");
+        ubicacionDTO.setPlanta(3);
+        jsonEsperado.put("ubicacion", new JSONObject(ubicacionDTO));
+        jsonEsperado.put("notas", "");
+        jsonEsperado.put("reservable", true);
 
-        JSONObject jsonRecibido = (JSONObject) espacioController.obtenerInformacion("idPrueba").getBody();
+        JSONObject jsonRecibido = new JSONObject((String) espacioController.obtenerInformacion("CRE.1200.03.060").getBody());
 
-        assertEquals(jsonEsperado, jsonRecibido);
+        assertEquals(jsonEsperado.get("id"), jsonRecibido.get("id"));
+        assertEquals(jsonEsperado.get("tipo"), jsonRecibido.get("tipo"));
+        assertEquals(jsonEsperado.get("nombre"), jsonRecibido.get("nombre"));
+        assertEquals(jsonEsperado.get("capacidad"), jsonRecibido.get("capacidad"));
+        assertEquals(jsonEsperado.get("equipamiento").toString(), jsonRecibido.get("equipamiento").toString());
+        assertEquals(jsonEsperado.get("ubicacion").toString(), jsonRecibido.get("ubicacion").toString());
+        assertEquals(jsonEsperado.get("notas"), jsonRecibido.get("notas"));
+        assertEquals(jsonEsperado.get("reservable"), jsonRecibido.get("reservable"));
     }
 
     @Test
     public void puedeBuscar() throws Exception {
 
+        String[] equip = new String[]{
+                "CANON;1;1",
+                "PANTALLA;1;1",
+                "PIZARRA;3;3",
+                "ORDENADOR;16;16"
+        };
 
-        JSONArray jsonRecibido = (JSONArray) espacioController.buscar("Ada Byron", "Laboratorio", new String[]{}, 30, Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), 10, 11, new Dia[]{}, false).getBody();
+        JSONArray jsonRecibido = new JSONArray((String) espacioController.buscar("Ada Byron", "Laboratorio", equip, 60, Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), 9, 10, new Dia[]{}, true).getBody());
 
-        JSONArray jsonArray = new JSONArray();
         JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("tipo", "Laboratorio");
-        jsonEsperado.append("capacidad", 30);
+        jsonEsperado.put("id", "CRE.1200.02.170");
+        jsonEsperado.put("tipo", "Laboratorio");
+        jsonEsperado.put("nombre", "LABORATORIO L 2.02");
+        jsonEsperado.put("capacidad", 62);
         List<EquipamientoDTO> equipamiento = new ArrayList<>();
         EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
-        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setTipo(TipoEquipamiento.CANON);
         equipamientoDTO.setCantidad(1);
         equipamientoDTO.setMaxCantidad(1);
         equipamiento.add(equipamientoDTO);
-        jsonEsperado.append("equipamiento", equipamiento);
+        EquipamientoDTO equipamientoDTO2 = new EquipamientoDTO();
+        equipamientoDTO2.setTipo(TipoEquipamiento.PANTALLA);
+        equipamientoDTO2.setCantidad(1);
+        equipamientoDTO2.setMaxCantidad(1);
+        equipamiento.add(equipamientoDTO2);
+        EquipamientoDTO equipamientoDTO3 = new EquipamientoDTO();
+        equipamientoDTO3.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO3.setCantidad(3);
+        equipamientoDTO3.setMaxCantidad(3);
+        equipamiento.add(equipamientoDTO3);
+        EquipamientoDTO equipamientoDTO4 = new EquipamientoDTO();
+        equipamientoDTO4.setTipo(TipoEquipamiento.ORDENADOR);
+        equipamientoDTO4.setCantidad(16);
+        equipamientoDTO4.setMaxCantidad(16);
+        equipamiento.add(equipamientoDTO4);
+        jsonEsperado.put("equipamiento", equipamiento);
         UbicacionDTO ubicacionDTO = new UbicacionDTO();
         ubicacionDTO.setEdificio("Ada Byron");
-        ubicacionDTO.setPlanta(1);
-        jsonEsperado.append("ubicacion", ubicacionDTO);
-        jsonEsperado.append("notas", "Nota de prueba");
-        jsonArray.put(jsonEsperado);
+        ubicacionDTO.setPlanta(2);
+        jsonEsperado.put("ubicacion", new JSONObject(ubicacionDTO));
+        jsonEsperado.put("notas", "");
+        jsonEsperado.put("reservable", true);
 
-        assertEquals(jsonArray, jsonRecibido);
+        JSONObject jsonObject = (JSONObject) jsonRecibido.get(0);
+
+        assertEquals(jsonEsperado.get("id"), jsonObject.get("id"));
+        assertEquals(jsonEsperado.get("tipo"), jsonObject.get("tipo"));
+        assertEquals(jsonEsperado.get("nombre"), jsonObject.get("nombre"));
+        assertEquals(jsonEsperado.get("capacidad"), jsonObject.get("capacidad"));
+        assertEquals(jsonEsperado.get("equipamiento").toString(), jsonObject.get("equipamiento").toString());
+        assertEquals(jsonEsperado.get("ubicacion").toString(), jsonObject.get("ubicacion").toString());
+        assertEquals(jsonEsperado.get("notas"), jsonObject.get("notas"));
+        assertEquals(jsonEsperado.get("reservable"), jsonObject.get("reservable"));
     }
 
     @Test
     public void puedeFiltrarPorEdificioYTipo() throws Exception {
 
-        JSONArray jsonRecibido = (JSONArray) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody();
+        JSONArray jsonRecibido = new JSONArray( (String) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody());
 
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("tipo", "Laboratorio");
-        jsonEsperado.append("capacidad", 30);
-        List<EquipamientoDTO> equipamiento = new ArrayList<>();
-        EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
-        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
-        equipamientoDTO.setCantidad(1);
-        equipamientoDTO.setMaxCantidad(1);
-        equipamiento.add(equipamientoDTO);
-        jsonEsperado.append("equipamiento", equipamiento);
-        UbicacionDTO ubicacionDTO = new UbicacionDTO();
-        ubicacionDTO.setEdificio("Ada Byron");
-        ubicacionDTO.setPlanta(1);
-        jsonEsperado.append("ubicacion", ubicacionDTO);
-        jsonEsperado.append("notas", "Nota de prueba");
-        jsonArray.put(jsonEsperado);
-
-        assertEquals(jsonArray, jsonRecibido);
+        assertEquals(34, jsonRecibido.length());
     }
 
     @Test
     public void puedeModificarDatos() throws Exception {
 
         DatosDTO datosDTO = new DatosDTO();
-        datosDTO.setId("idPrueba");
-        datosDTO.setCapacidad(30);
-
-        JSONObject jsonRecibido = (JSONObject) espacioController.modificarDatos(datosDTO).getBody();
-
-        JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("id", "idPrueba");
-        jsonEsperado.append("tipo", "Laboratorio");
-        jsonEsperado.append("capacidad", 30);
+        datosDTO.setId("CRE.1200.03.060");
+        datosDTO.setCapacidad(60);
+        datosDTO.setNotas("");
+        datosDTO.setReservable(true);
         List<EquipamientoDTO> equipamiento = new ArrayList<>();
         EquipamientoDTO equipamientoDTO = new EquipamientoDTO();
-        equipamientoDTO.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO.setTipo(TipoEquipamiento.PANTALLA);
         equipamientoDTO.setCantidad(1);
         equipamientoDTO.setMaxCantidad(1);
         equipamiento.add(equipamientoDTO);
-        jsonEsperado.append("equipamiento", equipamiento);
+        EquipamientoDTO equipamientoDTO2 = new EquipamientoDTO();
+        equipamientoDTO2.setTipo(TipoEquipamiento.PIZARRA);
+        equipamientoDTO2.setCantidad(5);
+        equipamientoDTO2.setMaxCantidad(5);
+        equipamiento.add(equipamientoDTO2);
+        EquipamientoDTO equipamientoDTO3 = new EquipamientoDTO();
+        equipamientoDTO3.setTipo(TipoEquipamiento.ORDENADOR);
+        equipamientoDTO3.setCantidad(30);
+        equipamientoDTO3.setMaxCantidad(30);
+        equipamiento.add(equipamientoDTO3);
+        datosDTO.setEquipamiento(equipamiento);
+
+        JSONObject jsonRecibido = new JSONObject( (String) espacioController.modificarDatos(datosDTO).getBody());
+
+        JSONObject jsonEsperado = new JSONObject();
+        jsonEsperado.put("id", "CRE.1200.03.060");
+        jsonEsperado.put("tipo", "Laboratorio");
+        jsonEsperado.put("nombre", "LABORATORIO L 3.04");
+        jsonEsperado.put("capacidad", 60);
+        jsonEsperado.put("equipamiento", equipamiento);
         UbicacionDTO ubicacionDTO = new UbicacionDTO();
         ubicacionDTO.setEdificio("Ada Byron");
-        ubicacionDTO.setPlanta(1);
-        jsonEsperado.append("ubicacion", ubicacionDTO);
-        jsonEsperado.append("notas", "Nota de prueba");
+        ubicacionDTO.setPlanta(3);
+        jsonEsperado.put("ubicacion", new JSONObject(ubicacionDTO));
+        jsonEsperado.put("notas", "");
+        jsonEsperado.put("reservable", true);
 
-        assertEquals(jsonEsperado, jsonRecibido);
+        assertEquals(jsonEsperado.get("id"), jsonRecibido.get("id"));
+        assertEquals(jsonEsperado.get("tipo"), jsonRecibido.get("tipo"));
+        assertEquals(jsonEsperado.get("nombre"), jsonRecibido.get("nombre"));
+        assertEquals(jsonEsperado.get("capacidad"), jsonRecibido.get("capacidad"));
+        assertEquals(jsonEsperado.get("equipamiento").toString(), jsonRecibido.get("equipamiento").toString());
+        assertEquals(jsonEsperado.get("ubicacion").toString(), jsonRecibido.get("ubicacion").toString());
+        assertEquals(jsonEsperado.get("notas"), jsonRecibido.get("notas"));
+        assertEquals(jsonEsperado.get("reservable"), jsonRecibido.get("reservable"));
     }
 
     @Test
     public void puedeObtenerHorarioEntreFechas() throws Exception {
 
-        JSONObject jsonRecibido = (JSONObject) espacioController.obtenerHorarioEntreFechas("idEspacio", Timestamp.valueOf("2007-09-23 10:10:10.0"), Timestamp.valueOf("2007-09-23 10:10:10.0")).getBody();
+        JSONArray jsonRecibido = new JSONArray( (String) espacioController.obtenerHorarioEntreFechas("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime()).getBody());
 
         JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.append("idEspacio", "idPrueba");
-        jsonEsperado.append("dia", "Laboratorio");
-        jsonEsperado.append("horaInicio", 9);
-        jsonEsperado.append("horaFin", 21);
+        jsonEsperado.put("idEspacio", "CRE.1200.03.060");
+        jsonEsperado.put("dia", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime());
+        jsonEsperado.put("horaInicio", 8);
+        jsonEsperado.put("horaFin", 22);
         List<Integer> horasOcupadas = new ArrayList<>();
-        horasOcupadas.add(9);
-        horasOcupadas.add(10);
-        jsonEsperado.append("horasOcupadas", horasOcupadas);
+        jsonEsperado.put("horasOcupadas", horasOcupadas);
 
-        assertEquals(jsonEsperado, jsonRecibido);
+        JSONObject jsonObject = (JSONObject) jsonRecibido.get(0);
+
+        //System.out.println(new Date((Long) jsonObject.get("dia")));
+
+        assertEquals(jsonEsperado.toString(), jsonObject.toString());
     }
 
     /*--- Test GerenteController ---*/
@@ -271,12 +342,12 @@ public class TestControlador {
     @Test
     public void puedeLoguear() throws Exception {
 
-        JSONObject jsonRecibido = (JSONObject) gerenteController.logIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody();
+        //JSONObject jsonRecibido = new JSONObject( (String) gerenteController.logIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody());
+        Boolean result = (Boolean) gerenteController.logIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody();
 
-        System.out.println(jsonRecibido);
+        System.out.println(result);
 
-        assert jsonRecibido != null;
-        assertEquals("true", jsonRecibido.toString());
+        assertEquals(false, result);
 
     }
 }

@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EspacioController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.LS.Aplicacion.Controlador</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EspacioController (com.LS.Aplicacion.Controlador)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EspacioController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,2%
+  </span>
+  <span class="absValue">
+    (68/ 73)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.LS.Aplicacion.Controlador;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import DTO.BusquedaDTO;
+<i>4</i>&nbsp;import DTO.DatosDTO;
+<i>5</i>&nbsp;import DTO.EquipamientoDTO;
+<i>6</i>&nbsp;import Enum.Dia;
+<i>7</i>&nbsp;import Enum.TipoEquipamiento;
+<i>8</i>&nbsp;import com.LS.Aplicacion.Mensajeria.Emisor;
+<i>9</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i>10</i>&nbsp;import org.json.JSONObject;
+<i>11</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>12</i>&nbsp;import org.springframework.http.HttpStatus;
+<i>13</i>&nbsp;import org.springframework.http.ResponseEntity;
+<i>14</i>&nbsp;import org.springframework.stereotype.Controller;
+<i>15</i>&nbsp;import org.springframework.web.bind.annotation.*;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import java.sql.Timestamp;
+<i>18</i>&nbsp;import java.util.ArrayList;
+<i>19</i>&nbsp;import java.util.Collections;
+<i>20</i>&nbsp;import java.util.List;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;@Controller(&quot;EspacioController&quot;)
+<i>23</i>&nbsp;@CrossOrigin(origins = &quot;*&quot;, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+<i>24</i>&nbsp;        RequestMethod.DELETE, RequestMethod.PATCH})
+<i>25</i>&nbsp;@RequestMapping(path = &quot;/espacio&quot;)
+<i>26</i>&nbsp;public class EspacioController {
+<i>27</i>&nbsp;
+<b class="fc"><i>28</i>&nbsp;    @Autowired</b>
+<i>29</i>&nbsp;    Emisor emisor = new Emisor();
+<i>30</i>&nbsp;
+<b class="fc"><i>31</i>&nbsp;    public EspacioController() throws Exception {</b>
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    @GetMapping(path = &quot;/getInfo&quot;)
+<i>35</i>&nbsp;    public ResponseEntity&lt;Object&gt; obtenerInformacion(String id) throws Exception {
+<b class="fc"><i>36</i>&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc"><i>37</i>&nbsp;        JSONObject jsonObject = new JSONObject();</b>
+<b class="fc"><i>38</i>&nbsp;        jsonObject.put(&quot;id&quot;, id);</b>
+<b class="fc"><i>39</i>&nbsp;        String json = &quot;obtenerEspacioPorId,&quot; + jsonObject.toString();</b>
+<b class="fc"><i>40</i>&nbsp;        emisor.enviarMensaje(json);</b>
+<b class="fc"><i>41</i>&nbsp;        String response = emisor.recibirMensaje();</b>
+<b class="fc"><i>42</i>&nbsp;        if (response.equals(&quot;error&quot;)) {</b>
+<b class="nc"><i>43</i>&nbsp;            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(&quot;&quot;);</b>
+<i>44</i>&nbsp;        } else {
+<b class="fc"><i>45</i>&nbsp;            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));</b>
+<i>46</i>&nbsp;        }
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    @GetMapping(path = &quot;/search&quot;)
+<i>50</i>&nbsp;    public ResponseEntity&lt;Object&gt; buscar(String edificio, String tipoEspacio, String[] equipamiento,
+<i>51</i>&nbsp;                                         int capacidad, long fechaInicio, long fechaFin, int horaInicio,
+<i>52</i>&nbsp;                                         int horaFin, Dia[] dias, boolean periodo) throws Exception {
+<i>53</i>&nbsp;
+<b class="fc"><i>54</i>&nbsp;        Timestamp fechaInicioTime = new Timestamp(fechaInicio);</b>
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;        Timestamp fechaFinTime = new Timestamp(fechaFin);</b>
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;        List&lt;Dia&gt; diasLista = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>59</i>&nbsp;        Collections.addAll(diasLista, dias);</b>
+<i>60</i>&nbsp;
+<b class="fc"><i>61</i>&nbsp;        List&lt;EquipamientoDTO&gt; equipamientoLista = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>62</i>&nbsp;        for (String s : equipamiento) {</b>
+<b class="fc"><i>63</i>&nbsp;            EquipamientoDTO e = new EquipamientoDTO();</b>
+<b class="fc"><i>64</i>&nbsp;            String[] eSplit = s.split(&quot;;&quot;);</b>
+<b class="fc"><i>65</i>&nbsp;            e.setTipo(TipoEquipamiento.valueOf(eSplit[0]));</b>
+<b class="fc"><i>66</i>&nbsp;            e.setCantidad(Integer.parseInt(eSplit[1]));</b>
+<b class="fc"><i>67</i>&nbsp;            e.setMaxCantidad(Integer.parseInt(eSplit[2]));</b>
+<b class="fc"><i>68</i>&nbsp;            equipamientoLista.add(e);</b>
+<i>69</i>&nbsp;        }
+<i>70</i>&nbsp;
+<b class="fc"><i>71</i>&nbsp;        BusquedaDTO busqueda = new BusquedaDTO();</b>
+<b class="fc"><i>72</i>&nbsp;        busqueda.setEdificio(edificio);</b>
+<b class="fc"><i>73</i>&nbsp;        busqueda.setTipoEspacio(tipoEspacio);</b>
+<b class="fc"><i>74</i>&nbsp;        busqueda.setCapacidad(capacidad);</b>
+<b class="fc"><i>75</i>&nbsp;        busqueda.setFechaInicio(fechaInicioTime);</b>
+<b class="fc"><i>76</i>&nbsp;        busqueda.setFechaFin(fechaFinTime);</b>
+<b class="fc"><i>77</i>&nbsp;        busqueda.setHoraInicio(horaInicio);</b>
+<b class="fc"><i>78</i>&nbsp;        busqueda.setHoraFin(horaFin);</b>
+<b class="fc"><i>79</i>&nbsp;        busqueda.setEquipamiento(equipamientoLista);</b>
+<b class="fc"><i>80</i>&nbsp;        busqueda.setDias(diasLista);</b>
+<b class="fc"><i>81</i>&nbsp;        busqueda.setPeriodo(periodo);</b>
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc"><i>84</i>&nbsp;        String dto = mapper.writeValueAsString(busqueda);</b>
+<b class="fc"><i>85</i>&nbsp;        String json = &quot;filtrarBusquedaEspacios,&quot; + dto;</b>
+<b class="fc"><i>86</i>&nbsp;        System.out.println(json);</b>
+<b class="fc"><i>87</i>&nbsp;        emisor.enviarMensaje(json);</b>
+<b class="fc"><i>88</i>&nbsp;        String response = emisor.recibirMensaje();</b>
+<b class="fc"><i>89</i>&nbsp;        System.out.println(response);</b>
+<b class="fc"><i>90</i>&nbsp;        if (response.equals(&quot;ERROR&quot;)) {</b>
+<b class="nc"><i>91</i>&nbsp;            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(&quot;&quot;);</b>
+<i>92</i>&nbsp;        } else {
+<b class="fc"><i>93</i>&nbsp;            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));</b>
+<i>94</i>&nbsp;        }
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    @GetMapping(path = &quot;/getInfoFiltered&quot;)
+<i>98</i>&nbsp;    public ResponseEntity&lt;Object&gt; obtenerPorEdificioYTipo(@RequestBody String edificio, @RequestBody String tipo) throws Exception {
+<b class="fc"><i>99</i>&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc"><i>100</i>&nbsp;        JSONObject jsonObject = new JSONObject();</b>
+<b class="fc"><i>101</i>&nbsp;        jsonObject.put(&quot;edificio&quot;, edificio);</b>
+<b class="fc"><i>102</i>&nbsp;        jsonObject.put(&quot;tipo&quot;, tipo);</b>
+<b class="fc"><i>103</i>&nbsp;        String json = &quot;obtenerEspacioPorEdificioYTipo,&quot; + jsonObject.toString();</b>
+<b class="fc"><i>104</i>&nbsp;        emisor.enviarMensaje(json);</b>
+<b class="fc"><i>105</i>&nbsp;        String response = emisor.recibirMensaje();</b>
+<b class="fc"><i>106</i>&nbsp;        if (response.equals(&quot;ERROR&quot;)) {</b>
+<b class="nc"><i>107</i>&nbsp;            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(&quot;&quot;);</b>
+<i>108</i>&nbsp;        } else {
+<b class="fc"><i>109</i>&nbsp;            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));</b>
+<i>110</i>&nbsp;        }
+<i>111</i>&nbsp;    }
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    @PatchMapping(path = &quot;/modifySpace&quot;)
+<i>114</i>&nbsp;    public ResponseEntity&lt;Object&gt; modificarDatos(@RequestBody DatosDTO datosDTO) throws Exception {
+<b class="fc"><i>115</i>&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc"><i>116</i>&nbsp;        String dto = mapper.writeValueAsString(datosDTO);</b>
+<b class="fc"><i>117</i>&nbsp;        String json = &quot;modificarEspacio,&quot; + dto;</b>
+<b class="fc"><i>118</i>&nbsp;        emisor.enviarMensaje(json);</b>
+<b class="fc"><i>119</i>&nbsp;        String response = emisor.recibirMensaje();</b>
+<b class="fc"><i>120</i>&nbsp;        if (response.equals(&quot;ERROR&quot;)) {</b>
+<b class="nc"><i>121</i>&nbsp;            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(&quot;&quot;);</b>
+<i>122</i>&nbsp;        } else {
+<b class="fc"><i>123</i>&nbsp;            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));</b>
+<i>124</i>&nbsp;        }
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    @PatchMapping(path = &quot;/getSpacesBetween&quot;)
+<i>128</i>&nbsp;    public ResponseEntity&lt;Object&gt; obtenerHorarioEntreFechas(@RequestBody String idEspacio, @RequestBody long inicio, @RequestBody long fin) throws Exception {
+<b class="fc"><i>129</i>&nbsp;        JSONObject jsonObject = new JSONObject();</b>
+<b class="fc"><i>130</i>&nbsp;        jsonObject.put(&quot;idEspacio&quot;, idEspacio);</b>
+<b class="fc"><i>131</i>&nbsp;        jsonObject.put(&quot;fechaInicio&quot;, inicio);</b>
+<b class="fc"><i>132</i>&nbsp;        jsonObject.put(&quot;fechaFin&quot;, fin);</b>
+<b class="fc"><i>133</i>&nbsp;        String json = &quot;obtenerHorarioEntreFechas,&quot; + jsonObject.toString();</b>
+<b class="fc"><i>134</i>&nbsp;        emisor.enviarMensaje(json);</b>
+<b class="fc"><i>135</i>&nbsp;        String response = emisor.recibirMensaje();</b>
+<b class="fc"><i>136</i>&nbsp;        if (response.equals(&quot;ERROR&quot;)) {</b>
+<b class="nc"><i>137</i>&nbsp;            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(&quot;&quot;);</b>
+<i>138</i>&nbsp;        } else {
+<b class="fc"><i>139</i>&nbsp;            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));</b>
+<i>140</i>&nbsp;        }
+<i>141</i>&nbsp;    }
+<i>142</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-06 00:06</div>
+</div>
+</body>
+</html>

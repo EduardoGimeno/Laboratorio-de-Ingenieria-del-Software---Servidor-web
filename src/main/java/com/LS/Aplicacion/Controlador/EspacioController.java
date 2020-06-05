@@ -1,9 +1,10 @@
 package com.LS.Aplicacion.Controlador;
 
 import DTO.BusquedaDTO;
-import Enum.*;
 import DTO.DatosDTO;
 import DTO.EquipamientoDTO;
+import Enum.Dia;
+import Enum.TipoEquipamiento;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -19,9 +20,9 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller("EspacioController")
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.PUT,
-        RequestMethod.DELETE,RequestMethod.PATCH})
-@RequestMapping(path="/espacio")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+        RequestMethod.DELETE, RequestMethod.PATCH})
+@RequestMapping(path = "/espacio")
 public class EspacioController {
 
     @Autowired
@@ -41,8 +42,7 @@ public class EspacioController {
         if (response.equals("error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
@@ -64,6 +64,7 @@ public class EspacioController {
             String[] eSplit = s.split(";");
             e.setTipo(TipoEquipamiento.valueOf(eSplit[0]));
             e.setCantidad(Integer.parseInt(eSplit[1]));
+            e.setMaxCantidad(Integer.parseInt(eSplit[2]));
             equipamientoLista.add(e);
         }
 
@@ -86,11 +87,10 @@ public class EspacioController {
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         System.out.println(response);
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
@@ -103,11 +103,10 @@ public class EspacioController {
         String json = "obtenerEspacioPorEdificioYTipo," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
@@ -118,28 +117,26 @@ public class EspacioController {
         String json = "modificarEspacio," + dto;
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 
     @PatchMapping(path = "/getSpacesBetween")
-    public ResponseEntity<Object> obtenerHorarioEntreFechas(@RequestBody String idEspacio, @RequestBody Timestamp inicio, @RequestBody Timestamp fin) throws Exception {
+    public ResponseEntity<Object> obtenerHorarioEntreFechas(@RequestBody String idEspacio, @RequestBody long inicio, @RequestBody long fin) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("idEspacio", idEspacio);
-        jsonObject.put("inicio", inicio);
-        jsonObject.put("fin", fin);
+        jsonObject.put("fechaInicio", inicio);
+        jsonObject.put("fechaFin", fin);
         String json = "obtenerHorarioEntreFechas," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        if (response.equals("error")) {
+        if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(JSONObject.stringToValue(response));
-            //return ResponseEntity.status(HttpStatus.ACCEPTED).body(mapper.readValue(response, EspacioDTO.class));
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
         }
     }
 }
