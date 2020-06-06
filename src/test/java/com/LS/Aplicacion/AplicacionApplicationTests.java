@@ -29,9 +29,8 @@ class AplicacionApplicationTests {
         testControlador.puedeObtenerHorarioEntreFechas();
         System.out.println("Controlador gerente...");
         testControlador.puedeLoguear();
-        System.out.println("Test del controlador pasados");
 
-        System.out.println("Ejecutando test de integridad...");
+        System.out.println("Test del controlador pasados");
     }
 
 }
