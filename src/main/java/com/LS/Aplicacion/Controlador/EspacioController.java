@@ -64,7 +64,6 @@ public class EspacioController {
             String[] eSplit = s.split(";");
             e.setTipo(TipoEquipamiento.valueOf(eSplit[0]));
             e.setCantidad(Integer.parseInt(eSplit[1]));
-            e.setMaxCantidad(Integer.parseInt(eSplit[2]));
             equipamientoLista.add(e);
         }
 

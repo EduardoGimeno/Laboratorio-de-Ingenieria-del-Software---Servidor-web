@@ -38,7 +38,7 @@ public class ReservaController {
     }
 
     @PatchMapping(path = "/changeState/{id}")
-    public ResponseEntity<Object> cambiarEstado(@PathVariable String id, @RequestBody String estado, @RequestBody String motivo) throws Exception {
+    public ResponseEntity<Object> cambiarEstado(@PathVariable String id, @RequestParam String estado, @RequestParam String motivo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
@@ -87,7 +87,8 @@ public class ReservaController {
     }
 
     @GetMapping(path = "/getReservasFiltradas")
-    public ResponseEntity<Object> getFilteredReservas(String edificio, String tipo, long fechaIni, long fechaFin, int horaIni, int horaFin, EstadoReserva estado) throws Exception {
+    public ResponseEntity<Object> getFilteredReservas(String edificio, String tipo, long fechaIni, long fechaFin,
+                                                      int horaIni, int horaFin, EstadoReserva estado) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("edificio", edificio);
         jsonObject.put("tipo", tipo);
