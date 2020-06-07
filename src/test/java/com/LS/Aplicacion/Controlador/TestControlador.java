@@ -41,8 +41,8 @@ public class TestControlador {
         reservaDTO.setId("idPrueba");
         reservaDTO.setHoraInicio(10);
         reservaDTO.setHoraFin(11);
-        reservaDTO.setFechaInicio(Timestamp.valueOf("2007-09-23 10:10:10.0"));
-        reservaDTO.setFechaFin(Timestamp.valueOf("2007-09-23 11:10:10.0"));
+        reservaDTO.setFechaInicio(Timestamp.valueOf("2007-09-23 0:0:0.0"));
+        reservaDTO.setFechaFin(Timestamp.valueOf("2007-09-23 0:0:0.0"));
         reservaDTO.setEstado(EstadoReserva.PENDIENTE);
         reservaDTO.setUsuario(usuario);
         reservaDTO.setIdEspacio("CRE.1200.03.060");
@@ -55,8 +55,8 @@ public class TestControlador {
 
         assertEquals(10, jsonRecibido.get("horaInicio"));
         assertEquals(11, jsonRecibido.get("horaFin"));
-        assertEquals(Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), jsonRecibido.get("fechaInicio"));
-        assertEquals(Timestamp.valueOf("2007-09-23 11:10:10.0").getTime(), jsonRecibido.get("fechaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonRecibido.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonRecibido.get("fechaFin"));
         assertEquals(EstadoReserva.PENDIENTE.getEstado().toUpperCase(), jsonRecibido.get("estado"));
         JSONObject objectUsuario = (JSONObject) jsonRecibido.get("usuario");
         assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
@@ -73,8 +73,8 @@ public class TestControlador {
 
         assertEquals(10, jsonRecibido.get("horaInicio"));
         assertEquals(11, jsonRecibido.get("horaFin"));
-        assertEquals(Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), jsonRecibido.get("fechaInicio"));
-        assertEquals(Timestamp.valueOf("2007-09-23 11:10:10.0").getTime(), jsonRecibido.get("fechaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonRecibido.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonRecibido.get("fechaFin"));
         assertEquals(EstadoReserva.ACEPTADA.getEstado().toUpperCase(), jsonRecibido.get("estado"));
         JSONObject objectUsuario = (JSONObject) jsonRecibido.get("usuario");
         assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
@@ -92,8 +92,8 @@ public class TestControlador {
         JSONObject jsonObject = (JSONObject) jsonRecibido.get(jsonRecibido.length() - 1);
         assertEquals(10, jsonObject.get("horaInicio"));
         assertEquals(11, jsonObject.get("horaFin"));
-        assertEquals(Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), jsonObject.get("fechaInicio"));
-        assertEquals(Timestamp.valueOf("2007-09-23 11:10:10.0").getTime(), jsonObject.get("fechaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaFin"));
         assertEquals(EstadoReserva.ACEPTADA.getEstado().toUpperCase(), jsonObject.get("estado"));
         JSONObject objectUsuario = (JSONObject) jsonObject.get("usuario");
         assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
@@ -125,32 +125,29 @@ public class TestControlador {
     @Test
     public void puedeFiltrarReservas() throws Exception {
 
-//        String edificio = "Ada Byron";
-//        String tipo = "Laboratorio";
-//        Timestamp fechaIni = Timestamp.valueOf("2007-09-23 0:0:0.0");
-//        Timestamp fechaFin = Timestamp.valueOf("2007-09-23 0:0:0.0");
-//        int horaIni = 10;
-//        int horaFin = 11;
-//        EstadoReserva estadoReserva = EstadoReserva.PENDIENTE;
-//
-//        JSONArray jsonRecibido = new JSONArray((String) reservaController.getFilteredReservas(edificio, tipo, fechaIni.getTime(), fechaFin.getTime(), horaIni, horaFin, estadoReserva).getBody());
-//
-//        JSONArray jsonArray = new JSONArray();
-//        JSONObject jsonEsperado = new JSONObject();
-//        jsonEsperado.put("id", "idPrueba");
-//        jsonEsperado.put("horaInicio", 10);
-//        jsonEsperado.put("horaFin", 11);
-//        jsonEsperado.put("fechaInicio", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-//        jsonEsperado.put("fechaFin", Timestamp.valueOf("2007-09-23 10:10:10.0"));
-//        jsonEsperado.put("estado", EstadoReserva.ACEPTADA);
-//        jsonEsperado.put("usuario", usuario);
-//        jsonEsperado.put("idEspacio", "idEspacioPrueba");
-//        List<Dia> dias = new ArrayList<>();
-//        dias.add(Dia.LUNES);
-//        jsonEsperado.put("dias", dias);
-//        jsonArray.put(jsonEsperado);
-//
-//        assertEquals(jsonArray, jsonRecibido);
+        String edificio = "Ada Byron";
+        String tipo = "Laboratorio";
+        Timestamp fechaIni = Timestamp.valueOf("2007-09-23 0:0:0.0");
+        Timestamp fechaFin = Timestamp.valueOf("2007-09-23 0:0:0.0");
+        int horaIni = 10;
+        int horaFin = 11;
+        EstadoReserva estadoReserva = EstadoReserva.ACEPTADA;
+
+        JSONArray jsonRecibido = new JSONArray((String) reservaController.getFilteredReservas(edificio, tipo, fechaIni.getTime(), fechaFin.getTime(), horaIni, horaFin, estadoReserva).getBody());
+
+        JSONObject jsonObject = (JSONObject) jsonRecibido.get(0);
+
+        assertEquals(10, jsonObject.get("horaInicio"));
+        assertEquals(11, jsonObject.get("horaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaFin"));
+        assertEquals(EstadoReserva.PENDIENTE.getEstado().toUpperCase(), jsonObject.get("estado"));
+        JSONObject objectUsuario = (JSONObject) jsonObject.get("usuario");
+        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
+        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
+        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
+        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
+        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
     }
 
     /*--- Test EspacioController ---*/

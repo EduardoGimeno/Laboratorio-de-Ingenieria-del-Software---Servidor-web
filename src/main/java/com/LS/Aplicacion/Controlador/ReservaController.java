@@ -1,8 +1,7 @@
 package com.LS.Aplicacion.Controlador;
 
-import Enum.EstadoReserva;
-import DTO.BusquedaDTO;
 import DTO.ReservaDTO;
+import Enum.EstadoReserva;
 import com.LS.Aplicacion.Mensajeria.Emisor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -97,7 +96,7 @@ public class ReservaController {
         jsonObject.put("horaIni", horaIni);
         jsonObject.put("horaFin", horaFin);
         jsonObject.put("estado", estado);
-        String json = "filtrarBusquedaEspacios," + jsonObject.toString();
+        String json = "filtrarBusquedaReservas," + jsonObject.toString();
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
         if (response.equals("ERROR")) {

@@ -39,7 +39,7 @@ public class Emisor {
 
     public void enviarMensaje(String mensaje) throws Exception {
         canal.basicPublish("", COLA_ENTRADA, null, mensaje.getBytes());
-        log.info(" [x] Enviado '" + mensaje + "'");
+        //log.info(" [x] Enviado '" + mensaje + "'");
     }
 
     public String recibirMensaje() throws Exception {
@@ -49,6 +49,7 @@ public class Emisor {
             response = canal.basicGet(COLA_SALIDA, autoAck);
         }
         String mensaje = new String(response.getBody(), StandardCharsets.UTF_8);
+        //log.info(" [x] Recibido '" + mensaje + "'");
         canal.basicAck(response.getEnvelope().getDeliveryTag(), false);
         return mensaje;
     }
