@@ -1,5 +1,6 @@
 package com.LS.Aplicacion.Controlador;
 
+import Enum.EstadoReserva;
 import DTO.BusquedaDTO;
 import DTO.ReservaDTO;
 import com.LS.Aplicacion.Mensajeria.Emisor;
@@ -86,18 +87,23 @@ public class ReservaController {
         }
     }
 
-    //??
-//    @GetMapping(path = "/getReservasFiltradas")
-//    public ResponseEntity<Object> getFilteredReservas(BusquedaDTO busqueda) throws Exception {
-//        ObjectMapper mapper = new ObjectMapper();
-//        String dto = mapper.writeValueAsString(busqueda);
-//        String json = "nombrefuncion," + dto;
-//        emisor.enviarMensaje(json);
-//        String response = emisor.recibirMensaje();
-//        if (response.equals("ERROR")) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
-//        }
-//    }
+    @GetMapping(path = "/getReservasFiltradas")
+    public ResponseEntity<Object> getFilteredReservas(String edificio, String tipo, long fechaIni, long fechaFin, int horaIni, int horaFin, EstadoReserva estado) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("edificio", edificio);
+        jsonObject.put("tipo", tipo);
+        jsonObject.put("fechaIni", fechaIni);
+        jsonObject.put("fechaFin", fechaFin);
+        jsonObject.put("horaIni", horaIni);
+        jsonObject.put("horaFin", horaFin);
+        jsonObject.put("estado", estado);
+        String json = "filtrarBusquedaEspacios," + jsonObject.toString();
+        emisor.enviarMensaje(json);
+        String response = emisor.recibirMensaje();
+        if (response.equals("ERROR")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
+        }
+    }
 }

@@ -5,9 +5,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
+@Controller("GerenteController")
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET})
+@RequestMapping(path = "/gerente")
 public class GerenteController {
 
     @Autowired

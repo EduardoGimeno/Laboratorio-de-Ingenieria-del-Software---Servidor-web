@@ -20,7 +20,7 @@ class AplicacionApplicationTests {
         testControlador.puedeCambiarEstadoReserva();
         testControlador.puedeBuscarReservasPorEspacio();
         testControlador.puedeObtenerHorarioDeEspacio();
-        //testControlador.puedeFiltrarReservas();
+        testControlador.puedeFiltrarReservas();
         System.out.println("Controlador espacios...");
         testControlador.puedeObtenerInformacion();
         testControlador.puedeBuscar();

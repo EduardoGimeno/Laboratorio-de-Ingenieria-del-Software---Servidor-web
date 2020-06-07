@@ -125,12 +125,15 @@ public class TestControlador {
     @Test
     public void puedeFiltrarReservas() throws Exception {
 
-//        BusquedaDTO busquedaDTO = new BusquedaDTO();
-//        busquedaDTO.setEdificio("Ada Byron");
-//        busquedaDTO.setTipoEspacio("Laboratorio");
-//        busquedaDTO.setCapacidad(60);
+//        String edificio = "Ada Byron";
+//        String tipo = "Laboratorio";
+//        Timestamp fechaIni = Timestamp.valueOf("2007-09-23 0:0:0.0");
+//        Timestamp fechaFin = Timestamp.valueOf("2007-09-23 0:0:0.0");
+//        int horaIni = 10;
+//        int horaFin = 11;
+//        EstadoReserva estadoReserva = EstadoReserva.PENDIENTE;
 //
-//        JSONArray jsonRecibido = new JSONArray((String) reservaController.getFilteredReservas(busquedaDTO).getBody());
+//        JSONArray jsonRecibido = new JSONArray((String) reservaController.getFilteredReservas(edificio, tipo, fechaIni.getTime(), fechaFin.getTime(), horaIni, horaFin, estadoReserva).getBody());
 //
 //        JSONArray jsonArray = new JSONArray();
 //        JSONObject jsonEsperado = new JSONObject();
