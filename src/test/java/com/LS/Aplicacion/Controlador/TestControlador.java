@@ -101,18 +101,20 @@ public class TestControlador {
 
         JSONArray jsonRecibido = new JSONArray((String) reservaController.getHorarios("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), Timestamp.valueOf("2007-09-23 0:0:0.0").getTime()).getBody());
 
-        JSONArray jsonArray = new JSONArray();
         // JSON para HorarioDTO
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.put("idEspacio", "CRE.1200.03.060");
-        jsonEsperado.put("dia", Timestamp.valueOf("2007-09-22 2:0:0.0").getTime());
         jsonEsperado.put("horaInicio", 8);
         jsonEsperado.put("horaFin", 22);
         List<Integer> horasOcupadas = new ArrayList<>();
         jsonEsperado.put("horasOcupadas", horasOcupadas);
-        jsonArray.put(jsonEsperado);
 
-        assertEquals(jsonArray.toString(), jsonRecibido.toString());
+        JSONObject jsonObject = (JSONObject) jsonRecibido.get(0);
+
+        assertEquals(jsonEsperado.get("idEspacio"), jsonObject.get("idEspacio"));
+        assertEquals(jsonEsperado.get("horaInicio"), jsonObject.get("horaInicio"));
+        assertEquals(jsonEsperado.get("horaFin"), jsonObject.get("horaFin"));
+        assertEquals(jsonEsperado.get("horasOcupadas"), jsonObject.get("horasOcupadas"));
     }
 
     @Test
