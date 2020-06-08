@@ -67,6 +67,24 @@ public class TestControlador {
     }
 
     @Test
+    public void puedeBuscarReservasPorId() throws Exception {
+
+        JSONObject jsonObject = new JSONObject((String) reservaController.getReservaById(idPrueba).getBody());
+
+        assertEquals(10, jsonObject.get("horaInicio"));
+        assertEquals(11, jsonObject.get("horaFin"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaInicio"));
+        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaFin"));
+        assertEquals(EstadoReserva.PENDIENTE.getEstado().toUpperCase(), jsonObject.get("estado"));
+        JSONObject objectUsuario = (JSONObject) jsonObject.get("usuario");
+        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
+        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
+        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
+        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
+        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
+    }
+
+    @Test
     public void puedeCambiarEstadoReserva() throws Exception {
 
         JSONObject jsonRecibido = new JSONObject((String) reservaController.cambiarEstado(idPrueba, "ACEPTADA", "Motivo de prueba").getBody());
@@ -141,7 +159,7 @@ public class TestControlador {
         assertEquals(11, jsonObject.get("horaFin"));
         assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaInicio"));
         assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaFin"));
-        assertEquals(EstadoReserva.PENDIENTE.getEstado().toUpperCase(), jsonObject.get("estado"));
+        assertEquals(EstadoReserva.ACEPTADA.getEstado().toUpperCase(), jsonObject.get("estado"));
         JSONObject objectUsuario = (JSONObject) jsonObject.get("usuario");
         assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
         assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));

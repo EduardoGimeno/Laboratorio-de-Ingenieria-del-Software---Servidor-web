@@ -37,6 +37,20 @@ public class ReservaController {
         }
     }
 
+    @GetMapping(path = "/getReservasById")
+    public ResponseEntity<Object> getReservaById(String id) throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        String json = "obtenerReservaPorID," + jsonObject.toString();
+        emisor.enviarMensaje(json);
+        String response = emisor.recibirMensaje();
+        if (response.equals("ERROR")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
+        }
+    }
+
     @PatchMapping(path = "/changeState/{id}")
     public ResponseEntity<Object> cambiarEstado(@PathVariable String id, @RequestParam String estado, @RequestParam String motivo) throws Exception {
         ObjectMapper mapper = new ObjectMapper();

@@ -17,6 +17,7 @@ class AplicacionApplicationTests {
         System.out.println("Ejecutando test del controlador...");
         System.out.println("Controlador reservas...");
         testControlador.puedeCrearReserva();
+        testControlador.puedeBuscarReservasPorId();
         testControlador.puedeCambiarEstadoReserva();
         testControlador.puedeBuscarReservasPorEspacio();
         testControlador.puedeObtenerHorarioDeEspacio();
