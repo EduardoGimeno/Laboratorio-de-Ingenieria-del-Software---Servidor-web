@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk11
+  - oraclejdk11
 branches:
   only:
     - master
@@ -11,15 +11,18 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-#before_script:
-#  -
 addons:
   sonarcloud:
-    organization: "unizar-30249-2020-grupo02" # the key of the org you chose at step #3
-    token:
-      secure: $SONAR_TOKEN # encrypted value of your token d005d02707dbd572bfcf6db1c1ae7e53da24bf51
+    organization: unizar-30249-2020-grupo02 # the key of the org you chose at step #3
+#    token:
+#      secure: $SONAR_TOKEN # encrypted value of your token d005d02707dbd572bfcf6db1c1ae7e53da24bf51
 script:
   # other script steps might be done before running the actual analysis
   - ./gradlew clean build
   - ./gradlew test jacocoTestReport
   - sonar-scanner
+#deploy:
+#  provider: heroku
+#  api_key: "$HEROKU_API_KEY"
+#  app:
+#    master: smartcampus-web
