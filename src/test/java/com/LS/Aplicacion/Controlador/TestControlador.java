@@ -1,13 +1,19 @@
 package com.LS.Aplicacion.Controlador;
 
-import DTO.*;
+import DTO.UsuarioDTO;
+import DTO.UbicacionDTO;
+import DTO.EquipamientoDTO;
+import DTO.DatosDTO;
+import DTO.ReservaDTO;
 import Enum.Dia;
 import Enum.EstadoReserva;
 import Enum.TipoEquipamiento;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -15,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestMethodOrder(OrderAnnotation.class)
 public class TestControlador {
 
     final UsuarioDTO usuario = new UsuarioDTO();
