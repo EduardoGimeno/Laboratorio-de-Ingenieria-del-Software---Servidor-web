@@ -19,8 +19,8 @@ public class GerenteController {
     public GerenteController() throws Exception {
     }
 
-    @PatchMapping(path = "/signIn")
-    public ResponseEntity<Object> logIn(@RequestBody String nomUsuario, @RequestBody String password) throws Exception {
+    @GetMapping(path = "/signIn")
+    public ResponseEntity<Object> logIn(String nomUsuario, String password) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("nomUsuario", nomUsuario);
         jsonObject.put("password", password);
