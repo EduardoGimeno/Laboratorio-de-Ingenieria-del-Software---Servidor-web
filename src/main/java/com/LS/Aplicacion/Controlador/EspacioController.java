@@ -91,7 +91,7 @@ public class EspacioController {
     }
 
     @GetMapping(path = "/getInfoFiltered")
-    public ResponseEntity<Object> obtenerPorEdificioYTipo(@RequestBody String edificio, @RequestBody String tipo) throws Exception {
+    public ResponseEntity<Object> obtenerPorEdificioYTipo(String edificio, String tipo) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("edificio", edificio);
         jsonObject.put("tipo", tipo);
