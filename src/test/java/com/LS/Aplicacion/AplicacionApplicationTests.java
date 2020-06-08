@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class AplicacionApplicationTests {
 
-    TestControlador testControlador = new TestControlador();
+    //TestControlador testControlador = new TestControlador();
 
     AplicacionApplicationTests() throws Exception {}
 
