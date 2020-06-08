@@ -95,46 +95,8 @@ public class TestControlador {
         assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
     }
 
-//    @Test
-//    @Order(2)
-//    public void puedeBuscarReservasPorId() throws Exception {
-//
-//        JSONObject jsonObject = new JSONObject((String) reservaController.getReservaById(idPrueba).getBody());
-//
-//        assertEquals(10, jsonObject.get("horaInicio"));
-//        assertEquals(11, jsonObject.get("horaFin"));
-//        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaInicio"));
-//        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonObject.get("fechaFin"));
-//        assertEquals(EstadoReserva.PENDIENTE.getEstado().toUpperCase(), jsonObject.get("estado"));
-//        JSONObject objectUsuario = (JSONObject) jsonObject.get("usuario");
-//        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
-//        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
-//        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
-//        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
-//        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
-//    }
-
-//    @Test
-//    @Order(3)
-//    public void puedeCambiarEstadoReserva() throws Exception {
-//
-//        JSONObject jsonRecibido = new JSONObject((String) reservaController.cambiarEstado(idPrueba, "ACEPTADA", "Motivo de prueba").getBody());
-//
-//        assertEquals(10, jsonRecibido.get("horaInicio"));
-//        assertEquals(11, jsonRecibido.get("horaFin"));
-//        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonRecibido.get("fechaInicio"));
-//        assertEquals(Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), jsonRecibido.get("fechaFin"));
-//        assertEquals(EstadoReserva.ACEPTADA.getEstado().toUpperCase(), jsonRecibido.get("estado"));
-//        JSONObject objectUsuario = (JSONObject) jsonRecibido.get("usuario");
-//        assertEquals(new JSONObject(usuario).get("nombre"), objectUsuario.get("nombre"));
-//        assertEquals(new JSONObject(usuario).get("apellidos"), objectUsuario.get("apellidos"));
-//        assertEquals(new JSONObject(usuario).get("email"), objectUsuario.get("email"));
-//        assertEquals(new JSONObject(usuario).get("NIA"), objectUsuario.get("nia"));
-//        assertEquals(new JSONObject(usuario).get("telefono"), objectUsuario.get("telefono"));
-//    }
-
     @Test
-    @Order(4)
+    @Order(2)
     public void puedeObtenerHorarioDeEspacio() throws Exception {
 
         JSONArray jsonRecibido = new JSONArray((String) reservaController.getHorarios("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime(), Timestamp.valueOf("2007-09-23 0:0:0.0").getTime()).getBody());
@@ -143,7 +105,7 @@ public class TestControlador {
         // JSON para HorarioDTO
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.put("idEspacio", "CRE.1200.03.060");
-        jsonEsperado.put("dia", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime());
+        jsonEsperado.put("dia", Timestamp.valueOf("2007-09-22 2:0:0.0").getTime());
         jsonEsperado.put("horaInicio", 8);
         jsonEsperado.put("horaFin", 22);
         List<Integer> horasOcupadas = new ArrayList<>();
@@ -154,7 +116,7 @@ public class TestControlador {
     }
 
     @Test
-    @Order(5)
+    @Order(3)
     public void puedeFiltrarReservas() throws Exception {
 
         String edificio = "Ada Byron";
@@ -187,7 +149,7 @@ public class TestControlador {
     EspacioController espacioController = new EspacioController();
 
     @Test
-    @Order(6)
+    @Order(4)
     public void puedeObtenerInformacion() throws Exception {
 
         JSONObject jsonEsperado = new JSONObject();
@@ -232,7 +194,7 @@ public class TestControlador {
     }
 
     @Test
-    @Order(7)
+    @Order(5)
     public void puedeBuscar() throws Exception {
 
         String[] equip = new String[]{
@@ -291,7 +253,7 @@ public class TestControlador {
     }
 
     @Test
-    @Order(8)
+    @Order(6)
     public void puedeFiltrarPorEdificioYTipo() throws Exception {
 
         JSONArray jsonRecibido = new JSONArray((String) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody());
@@ -300,7 +262,7 @@ public class TestControlador {
     }
 
     @Test
-    @Order(9)
+    @Order(7)
     public void puedeModificarDatos() throws Exception {
 
         DatosDTO datosDTO = new DatosDTO();
@@ -351,36 +313,15 @@ public class TestControlador {
         assertEquals(jsonEsperado.get("reservable"), jsonRecibido.get("reservable"));
     }
 
-    @Test
-    @Order(10)
-    public void puedeObtenerHorarioEntreFechas() throws Exception {
-
-        JSONArray jsonRecibido = new JSONArray((String) espacioController.obtenerHorarioEntreFechas("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime()).getBody());
-
-        JSONObject jsonEsperado = new JSONObject();
-        jsonEsperado.put("idEspacio", "CRE.1200.03.060");
-        jsonEsperado.put("dia", Timestamp.valueOf("2007-09-23 0:0:0.0").getTime());
-        jsonEsperado.put("horaInicio", 8);
-        jsonEsperado.put("horaFin", 22);
-        List<Integer> horasOcupadas = new ArrayList<>();
-        jsonEsperado.put("horasOcupadas", horasOcupadas);
-
-        JSONObject jsonObject = (JSONObject) jsonRecibido.get(0);
-
-        assertEquals(jsonEsperado.toString(), jsonObject.toString());
-    }
-
     /*--- Test GerenteController ---*/
 
     GerenteController gerenteController = new GerenteController();
 
     @Test
-    @Order(11)
+    @Order(8)
     public void puedeLoguear() throws Exception {
 
         Boolean result = (Boolean) gerenteController.logIn("nomUsuarioPrueba", "passUsuarioPrueba").getBody();
-
-        System.out.println(result);
 
         assertEquals(false, result);
 

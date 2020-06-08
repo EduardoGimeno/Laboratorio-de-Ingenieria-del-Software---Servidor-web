@@ -33,7 +33,6 @@ public class EspacioController {
 
     @GetMapping(path = "/getInfo")
     public ResponseEntity<Object> obtenerInformacion(String id) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
         String json = "obtenerEspacioPorId," + jsonObject.toString();
@@ -82,10 +81,8 @@ public class EspacioController {
         ObjectMapper mapper = new ObjectMapper();
         String dto = mapper.writeValueAsString(busqueda);
         String json = "filtrarBusquedaEspacios," + dto;
-        System.out.println(json);
         emisor.enviarMensaje(json);
         String response = emisor.recibirMensaje();
-        System.out.println(response);
         if (response.equals("ERROR")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
         } else {
@@ -123,19 +120,4 @@ public class EspacioController {
         }
     }
 
-    @PatchMapping(path = "/getSpacesBetween")
-    public ResponseEntity<Object> obtenerHorarioEntreFechas(@RequestBody String idEspacio, @RequestBody long inicio, @RequestBody long fin) throws Exception {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("idEspacio", idEspacio);
-        jsonObject.put("fechaInicio", inicio);
-        jsonObject.put("fechaFin", fin);
-        String json = "obtenerHorarioEntreFechas," + jsonObject.toString();
-        emisor.enviarMensaje(json);
-        String response = emisor.recibirMensaje();
-        if (response.equals("ERROR")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
-        }
-    }
 }
