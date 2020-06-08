@@ -37,7 +37,7 @@ sonarqube {
 		property "sonar.projectKey", "UNIZAR-30249-2020-GRUPO02_Servidor-Web"
 		property "sonar.organization", "unizar-30249-2020-grupo02"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.login", "ac5bb770c994578b6899eb1c75a5408e4d1b4293"
+		property "sonar.login", "d005d02707dbd572bfcf6db1c1ae7e53da24bf51"
 	}
 }
 
