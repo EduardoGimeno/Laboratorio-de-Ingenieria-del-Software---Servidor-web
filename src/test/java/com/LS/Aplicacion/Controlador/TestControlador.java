@@ -1,10 +1,6 @@
 package com.LS.Aplicacion.Controlador;
 
-import DTO.UsuarioDTO;
-import DTO.UbicacionDTO;
-import DTO.EquipamientoDTO;
-import DTO.DatosDTO;
-import DTO.ReservaDTO;
+import DTO.*;
 import Enum.Dia;
 import Enum.EstadoReserva;
 import Enum.TipoEquipamiento;
@@ -292,7 +288,7 @@ public class TestControlador {
     @Order(9)
     public void puedeFiltrarPorEdificioYTipo() throws Exception {
 
-        JSONArray jsonRecibido = new JSONArray( (String) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody());
+        JSONArray jsonRecibido = new JSONArray((String) espacioController.obtenerPorEdificioYTipo("Ada Byron", "Laboratorio").getBody());
 
         assertEquals(34, jsonRecibido.length());
     }
@@ -324,7 +320,7 @@ public class TestControlador {
         equipamiento.add(equipamientoDTO3);
         datosDTO.setEquipamiento(equipamiento);
 
-        JSONObject jsonRecibido = new JSONObject( (String) espacioController.modificarDatos(datosDTO).getBody());
+        JSONObject jsonRecibido = new JSONObject((String) espacioController.modificarDatos(datosDTO).getBody());
 
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.put("id", "CRE.1200.03.060");
@@ -353,7 +349,7 @@ public class TestControlador {
     @Order(11)
     public void puedeObtenerHorarioEntreFechas() throws Exception {
 
-        JSONArray jsonRecibido = new JSONArray( (String) espacioController.obtenerHorarioEntreFechas("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime()).getBody());
+        JSONArray jsonRecibido = new JSONArray((String) espacioController.obtenerHorarioEntreFechas("CRE.1200.03.060", Timestamp.valueOf("2007-09-23 10:10:10.0").getTime(), Timestamp.valueOf("2007-09-23 10:10:10.0").getTime()).getBody());
 
         JSONObject jsonEsperado = new JSONObject();
         jsonEsperado.put("idEspacio", "CRE.1200.03.060");
