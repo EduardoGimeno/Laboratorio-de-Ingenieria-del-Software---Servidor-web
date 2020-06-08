@@ -9,8 +9,7 @@ class AplicacionApplicationTests {
 
     TestControlador testControlador = new TestControlador();
 
-    AplicacionApplicationTests() throws Exception {
-    }
+    AplicacionApplicationTests() throws Exception {}
 
     @Test
     void main() throws Exception {
