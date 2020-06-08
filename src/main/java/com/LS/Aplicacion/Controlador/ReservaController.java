@@ -68,21 +68,6 @@ public class ReservaController {
         }
     }
 
-    @GetMapping(path = "/getReservasByEspacio")
-    public ResponseEntity<Object> getReservasByEspacio(String idEspacio) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("idEspacio", idEspacio);
-        String json = "obtenerReservasEspacio," + jsonObject.toString();
-        emisor.enviarMensaje(json);
-        String response = emisor.recibirMensaje();
-        if (response.equals("ERROR")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(JSONObject.stringToValue(response));
-        }
-    }
-
     @GetMapping(path = "/getHorarios")
     public ResponseEntity<Object> getHorarios(String idEspacio, long fechaInicio,
                                               long fechaFin) throws Exception {
