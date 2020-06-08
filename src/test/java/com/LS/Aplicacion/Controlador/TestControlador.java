@@ -114,7 +114,7 @@ public class TestControlador {
         assertEquals(jsonEsperado.get("idEspacio"), jsonObject.get("idEspacio"));
         assertEquals(jsonEsperado.get("horaInicio"), jsonObject.get("horaInicio"));
         assertEquals(jsonEsperado.get("horaFin"), jsonObject.get("horaFin"));
-        assertEquals(jsonEsperado.get("horasOcupadas"), jsonObject.get("horasOcupadas"));
+        assertEquals(jsonEsperado.get("horasOcupadas").toString(), jsonObject.get("horasOcupadas").toString());
     }
 
     @Test
