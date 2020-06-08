@@ -21,8 +21,8 @@ addons:
 #  - ./gradlew clean build
 #  - ./gradlew jacocoTestReport
 #  - sonar-scanner
-deploy:
-  provider: heroku
-  api_key: "$HEROKU_API_KEY"
-  app:
-    master: smartcampus-unizar
+#deploy:
+#  provider: heroku
+#  api_key: "$HEROKU_API_KEY"
+#  app:
+#    master: smartcampus-unizar
