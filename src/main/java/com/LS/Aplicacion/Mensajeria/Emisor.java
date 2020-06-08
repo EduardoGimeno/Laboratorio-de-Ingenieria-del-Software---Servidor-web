@@ -20,7 +20,6 @@ public class Emisor {
     private final static String ENV_AMQPURL_NAME = "CLOUDAMQP_URL";
     private final Channel canal;
 
-
     public Emisor() throws Exception {
         ConnectionFactory factoria = new ConnectionFactory();
         String amqpURL = System.getenv(ENV_AMQPURL_NAME) != null ?
